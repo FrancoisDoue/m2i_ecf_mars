@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPokeList } from '../storage/slices/pokeSlice'
 import PokeList from '../components/PokeList'
 import { useRoute } from '@react-navigation/native'
+import GradientView from '../components/shared/GradientView'
 
 const HomeScreen = ({ navigation, route }) => {
 
@@ -25,19 +26,22 @@ const HomeScreen = ({ navigation, route }) => {
 
 
   return (
-    <View style={styles.main}>
-      {pokemon.isLoading ?
-        <ActivityIndicator size={200} />
-        :
-        <>
-          {pokemon.prev && <Button title='Prev' onPress={handlePrev} />}
+    <GradientView>
+      {/* <View style={styles.main}> */}
+        {pokemon.isLoading ?
+          <ActivityIndicator size={200} />
+          :
+          <>
+            {pokemon.prev && <Button title='Prev' onPress={handlePrev} />}
 
-          <PokeList list={pokemon.pokeList} pressedAction={handlePokeNavigation} />
+            <PokeList list={pokemon.pokeList} pressedAction={handlePokeNavigation} />
 
-          {pokemon.next && <Button title='Next' onPress={handleNext} />}
-        </>
-      }
-    </View>
+            {pokemon.next && <Button title='Next' onPress={handleNext} />}
+          </>
+        }
+      {/* </View> */}
+
+    </GradientView>
   )
 }
 

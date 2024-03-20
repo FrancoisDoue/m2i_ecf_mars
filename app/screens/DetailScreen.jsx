@@ -3,6 +3,8 @@ import React, { useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getEvolve, setPokemon } from '../storage/slices/pokeSlice'
 import { addToFavorites, removeFromFavorites } from '../storage/slices/userSlice'
+import globalStyle, { pokeColors } from '../styles/globalStyle'
+import PokeButton from '../components/shared/PokeButton'
 
 const DetailScreen = ({navigation, route}) => {
 
@@ -13,18 +15,16 @@ const DetailScreen = ({navigation, route}) => {
     
     const isInFavorites = !!favorites.find(({id}) => id === pokeId)
 
-    console.log(favorites, isInFavorites)
+    console.log(selectedPokemon?.chain)
 
     useLayoutEffect(() => {
-        // dispatch(setPokemon(pokeId))
         if (selectedPokemon?.id == pokeId) {
             dispatch(getEvolve({url: selectedPokemon.species.url}))
-
-            navigation.setOptions({title : selectedPokemon.name})
+            navigation.setOptions({title : selectedPokemon.name.toUpperCase()})
         } else {
             dispatch(setPokemon(pokeId))
         }
-    }, [selectedPokemon])
+    }, [selectedPokemon?.id])
 
     const toggleFavorites = () => {
         if (!isInFavorites) dispatch(addToFavorites(selectedPokemon))
@@ -65,7 +65,11 @@ const DetailScreen = ({navigation, route}) => {
                         </Text>
                     </View>
                 )}
-                <Button title={isInFavorites? 'Release' : 'Catch'} onPress={toggleFavorites} />
+                <PokeButton 
+                    title={isInFavorites? 'Release' : 'Catch!'} 
+                    onPress={toggleFavorites} 
+                    variant={!isInFavorites}
+                />
             </>
         }
     </View>
@@ -78,7 +82,6 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         alignItems: 'center',
-        padding: 10
     },
     pokeHeader: {
         width: '100%',
@@ -86,13 +89,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 10,
         borderBottomWidth: 3,
-        borderColor: 'black'
+        backgroundColor: pokeColors.pokeDarkRed,
+        borderColor: pokeColors.pokeYellow,
+        elevation: 2,
     },
     largeText: {
-        fontSize: 30
+        ...globalStyle.textXLarge,
+        ...globalStyle.textWhite
     },
     mediumText: {
-        fontSize: 22,
+        ...globalStyle.textLarge,
+        ...globalStyle.textBlue,
     },
     
     underLine: {
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',      
         padding: 10,
         borderBottomWidth: 1,
-        borderColor: 'black'
+        borderColor: pokeColors.pokeDarkRed
     },
     pokeRowStat: {
         width: '80%',

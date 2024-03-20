@@ -5,17 +5,18 @@ import { getPokeList } from '../storage/slices/pokeSlice'
 import PokeList from '../components/PokeList'
 import { useRoute } from '@react-navigation/native'
 import GradientView from '../components/shared/GradientView'
+import { pokeColors } from '../styles/globalStyle'
 
 const HomeScreen = ({ navigation, route }) => {
 
   const dispatch = useDispatch()
   const pokemon = useSelector(state => state.pokemon)
-  const search = route.params?.search
-  console.log(search)
+  // const search = route.params?.search
+  // console.log(search)
 
   useLayoutEffect(() => {
     dispatch(getPokeList())
-  }, [search])
+  }, [])
 
   const handlePokeNavigation = (id) => {
     console.log(id)
@@ -27,20 +28,19 @@ const HomeScreen = ({ navigation, route }) => {
 
   return (
     <GradientView>
-      {/* <View style={styles.main}> */}
         {pokemon.isLoading ?
-          <ActivityIndicator size={200} />
+          <View style={[styles.main, styles.spinnerContainer]} >
+            <ActivityIndicator size={200} color={pokeColors.pokeRed} />
+          </View>
           :
           <>
             {pokemon.prev && <Button title='Prev' onPress={handlePrev} />}
 
-            <PokeList list={pokemon.pokeList} pressedAction={handlePokeNavigation} />
+            <PokeList list={pokemon.pokeList} pressedAction={handlePokeNavigation} /* onEnd={handleNext} */ />
 
             {pokemon.next && <Button title='Next' onPress={handleNext} />}
           </>
         }
-      {/* </View> */}
-
     </GradientView>
   )
 }
@@ -51,4 +51,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
   },
+  spinnerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+  
 })

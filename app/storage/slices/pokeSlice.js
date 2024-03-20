@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../utils/pokeapi.backend";
+import { evolveMap } from "../../utils/mappers";
 
 const pokeSlice = createSlice({
     name: 'pokemon',
@@ -19,7 +20,7 @@ const pokeSlice = createSlice({
             state.selectedPokemon = findedPokemon
         },
         setEvolve: (state, action) => {
-            console.log( 'on slice',action.payload)
+            state.selectedPokemon.chain = evolveMap(action.payload)
         },
         setPrev: (state, action) => {
             state.prev = action.payload
@@ -32,7 +33,7 @@ const pokeSlice = createSlice({
         builder.addCase(getPokeList.fulfilled, (state, action) => {
             state.isLoading = false
             state.error = null
-            state.pokeList = action.payload
+            state.pokeList.push(...action.payload)
         })
         builder.addCase(getPokeList.pending, (state) => { state.isLoading = true })
         builder.addCase(getPokeList.rejected, (state, action) => {
@@ -82,7 +83,7 @@ export const getEvolve = createAsyncThunk(
         return api.get(args.url)
             .then(({evolution_chain}) => 
                 api.get(evolution_chain.url)
-                    .then((data) => dispatch(setEvolve(data.chain.evolves_to[0])))
+                    .then((data) => dispatch(setEvolve(data.chain)))
             )
             .catch(rejectWithValue)
     } 

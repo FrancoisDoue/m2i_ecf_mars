@@ -10,7 +10,7 @@ import store from './storage/store'
 import DetailScreen from './screens/DetailScreen'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { StatusBar, StyleSheet } from 'react-native'
-import { colors, pokeColors } from './styles/globalStyle'
+import globalStyle, { pokeColors } from './styles/globalStyle'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -32,7 +32,6 @@ const PokeStack = () => {
 
 const App = () => {
 
-
   return (
     <>
     <StatusBar backgroundColor={pokeColors.pokeRed} />
@@ -45,7 +44,7 @@ const App = () => {
             headerStyle: styles.headerStyle,
             headerTintColor: pokeColors.pokeWhite,
             tabBarStyle: styles.tabBarStyle,
-            tabBarLabelStyle: styles.tabBarLabelStyle,
+            tabBarLabelStyle: globalStyle.textSmall,
             tabBarInactiveTintColor: pokeColors.pokeBlue,
             tabBarActiveTintColor: pokeColors.pokeDarkRed,
           }}
@@ -80,9 +79,6 @@ const styles = StyleSheet.create({
     backgroundColor: pokeColors.pokeWhite, 
     borderTopWidth: 2,
     borderTopColor: pokeColors.pokeRed,
-  },
-  tabBarLabelStyle: {
-    fontSize: 16,
   },
   headerStyle: {
     backgroundColor: pokeColors.pokeRed

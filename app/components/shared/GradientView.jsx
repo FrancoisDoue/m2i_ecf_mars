@@ -7,7 +7,7 @@ const GradientView = ({style, children}) => {
   return (
     <View style={styles.main}>
       <View styles={styles.gradientBg}>
-        <RadialGradient x='-25%' y='-25%' rx='170%' ry='130%' colorList={gradientColors.pokeGradient} />
+        <RadialGradient x='125%' y='100%' rx='170%' ry='110%' colorList={gradientColors.pokeGradient} />
       </View>
       <View style={[styles.gradientBg, style]}>
         {children}

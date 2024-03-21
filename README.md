@@ -17,7 +17,7 @@ Pour connaître l'avancement des futures fonctionnalités, n'hésitez pas à con
 
 ## <a id='screenshots'></a>ScreenShots
 <img src="docs/Screenshot_1711031164.png" alt="Chargement" width="300"/>
-<img src="docs/Screenshot_1711031162.png" alt="Liste des Pokémons" width="300"/>
+<img src="docs/Screenshot_1711037304.png" alt="Liste des Pokémons" width="300"/>
 <img src="docs/Screenshot_1711031185.png" alt="Collection de Pokémons" width="300"/>
 <img src="docs/Screenshot_1711031211.png" alt="Détails d'un Pokémon" width="300"/>
 

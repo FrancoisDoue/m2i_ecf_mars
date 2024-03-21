@@ -9,7 +9,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   const pokemonIsLoading = useSelector((state) => state.pokemon.isLoading)
-  const userIsLoading = useSelector((state) => state.user.isLoading)
+  // const userIsLoading = useSelector((state) => state.user.isLoading)
 
   const initializeApp = () => {
     dispatch(getPokeList())
@@ -20,7 +20,7 @@ const App = () => {
     initializeApp()
   }, [])
 
-  if(!pokemonIsLoading && !userIsLoading) return (
+  if(!pokemonIsLoading) return (
     <PokeNavigation />
   )
   return (

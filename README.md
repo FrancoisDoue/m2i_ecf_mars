@@ -1,10 +1,11 @@
 # ECF - REACT NATIVE - MARS 2024
 ### 20/04/2023 - 21/04/2023
 
-Application Pokédex en React Native.
+Application Pokédex en React Native en consommant l'API [PokéApi](https://pokeapi.co/).  
 Cette application permet l'affichage des Pokémons avec pagination, l'affichage de leur détais et l'ajout dans une collection stockée localement.  
 Prochainement, l'ajout d'un outil de recherche et de tri sera implémenté, ainsi que la possibilité de consulter les évolutions passées et à venir des pokémons depuis leur page de détais.  
-Pour connaître l'avancement des futures fonctionnalités, n'hésitez pas à consulter les branches **[dev](https://github.com/FrancoisDoue/m2i_ecf_mars/tree/dev)** et **[dev-test](https://github.com/FrancoisDoue/m2i_ecf_mars/tree/dev-test)** de ce repository.
+
+Pour connaître l'avancement des futures fonctionnalités, n'hésitez pas à consulter la branche **[dev](https://github.com/FrancoisDoue/m2i_ecf_mars/tree/dev)** de ce repository.
 
 
 ### **[Enoncé complet](docs/sujet-ecf-20-03-24.md)**

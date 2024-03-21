@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation, route }) => {
   // console.log(search)
 
   useLayoutEffect(() => {
-    dispatch(getPokeList())
+    // dispatch(getPokeList())
   }, [])
 
   const handlePokeNavigation = (id) => {
@@ -29,9 +29,11 @@ const HomeScreen = ({ navigation, route }) => {
   return (
     <GradientView>
         {pokemon.isLoading ?
-          <View style={[styles.main, styles.spinnerContainer]} >
+        <>
+          {/* <View style={[styles.main, styles.spinnerContainer]} >
             <ActivityIndicator size={200} color={pokeColors.pokeRed} />
-          </View>
+          </View> */}
+        </>
           :
           <>
             {pokemon.prev && <Button title='Prev' onPress={handlePrev} />}

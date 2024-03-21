@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        favorites: []
+        favorites: [],
+        isLoading: false,
+        error: null,
     },
     reducers: {
         setFavorites: (state, action) => {

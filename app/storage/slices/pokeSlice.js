@@ -33,7 +33,7 @@ const pokeSlice = createSlice({
         builder.addCase(getPokeList.fulfilled, (state, action) => {
             state.isLoading = false
             state.error = null
-            state.pokeList.push(...action.payload)
+            state.pokeList = action.payload
         })
         builder.addCase(getPokeList.pending, (state) => { state.isLoading = true })
         builder.addCase(getPokeList.rejected, (state, action) => {

@@ -2,7 +2,7 @@ import { FlatList, StyleSheet } from 'react-native'
 import React from 'react'
 import PokeItem from './PokeItem'
 
-const PokeList = ({list, pressedAction, onEnd}) => {
+const PokeList = ({list, pressedAction, headerComponent, footerComponent /*, onEnd*/}) => {
 
   // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
   //   // https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
@@ -15,6 +15,8 @@ const PokeList = ({list, pressedAction, onEnd}) => {
     <FlatList
       data={list}
       numColumns={2}
+      ListHeaderComponent={ headerComponent || <></> }
+      ListFooterComponent={ footerComponent || <></> }
       // onScroll={({nativeEvent}) => (!!onEnd && isCloseToBottom(nativeEvent)) && onEnd()} // pb de performance...
       // scrollEventThrottle={200}
       columnWrapperStyle={{justifyContent: 'center'}}

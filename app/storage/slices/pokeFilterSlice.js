@@ -1,9 +1,9 @@
+// UNUSED
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../utils/pokeapi.backend";
 
 const urls = {
-    types:' https://pokeapi.co/api/v2/type',
-    
+    types:' https://pokeapi.co/api/v2/type',   
 }
 
 const pokeFilterSlice = createSlice({
@@ -40,7 +40,7 @@ export default pokeFilterSlice.reducer
 export const fetchFilters = createAsyncThunk(
     'pokeFilter/fetchFilters',
     async (args, {rejectWithValue}) => api.all(
-        
+        // WIP
     )
     .then(rejectWithValue)
 )

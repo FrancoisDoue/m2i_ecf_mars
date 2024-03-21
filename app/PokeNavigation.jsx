@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     paddingBottom: 9, 
     backgroundColor: pokeColors.pokeWhite, 
     borderTopWidth: 2,
-    borderTopColor: pokeColors.pokeRed,
+    borderTopColor: pokeColors.pokeDarkRed,
   },
   headerStyle: {
     backgroundColor: pokeColors.pokeRed

@@ -2,15 +2,27 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import PokeList from '../components/PokeList'
+import GradientView from '../components/shared/GradientView'
+
 
 const FavoritesScreen = ({ navigation }) => {
 
     const { favorites } = useSelector(state => state.user)
+    
+    handleNavigate = (id) => {
+        navigation.navigate('home', {
+            screen: 'pokedetail',
+            params: {pokeId: id},
+        })
+    }
 
     return (
-        <View>
-            <PokeList list={favorites} pressedAction={console.log} />
-        </View>
+        <GradientView>
+            <PokeList 
+                list={favorites}
+                pressedAction={handleNavigate}
+            />
+        </GradientView>
     )
 }
 

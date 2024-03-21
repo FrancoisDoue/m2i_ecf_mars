@@ -14,7 +14,7 @@ const PokeButton = ({title = 'PokeButton', style, onPress, variant}) => {
             </Text> 
             {variant && 
                 <View style={styles.pokeball}>
-                    <Icon name='catching-pokemon' color={pokeColors.pokeYellow} size={40} /> 
+                    <Icon name='catching-pokemon' color={pokeColors.pokeWhite} size={40} /> 
                 </View>
             }
         </TouchableOpacity>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     pokeButtonText: {
         ...globalStyle.textXLarge,
-        ...globalStyle.textYellow,
+        ...globalStyle.textWhite,
     },
     pokeball: {
         transform: [{rotate: '-15deg'}]

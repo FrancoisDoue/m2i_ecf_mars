@@ -1,34 +1,37 @@
-import { Button, Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getEvolve, setPokemon } from '../storage/slices/pokeSlice'
-import { addToFavorites, removeFromFavorites } from '../storage/slices/userSlice'
+import { getEvolve, getPokemonByIdOrName, setPokemon } from '../storage/slices/pokeSlice'
+import { removeFavoriteFromStore, storeNewFavorite } from '../storage/slices/userSlice'
 import globalStyle, { pokeColors } from '../styles/globalStyle'
 import PokeButton from '../components/shared/PokeButton'
 
 const DetailScreen = ({navigation, route}) => {
 
     const {pokeId} = route.params
+    console.log(pokeId)
     const dispatch = useDispatch()
-    const {selectedPokemon} = useSelector(state => state.pokemon)
+    const {selectedPokemon, pokeList} = useSelector(state => state.pokemon)
     const {favorites} = useSelector(state => state.user)
     
     const isInFavorites = !!favorites.find(({id}) => id === pokeId)
-
-    console.log(selectedPokemon?.chain)
+    const isInActualList = pokeList.some(({id}) => id === pokeId)
 
     useLayoutEffect(() => {
-        if (selectedPokemon?.id == pokeId) {
-            dispatch(getEvolve({url: selectedPokemon.species.url}))
+        if (isInActualList) dispatch(setPokemon(pokeId))
+        else dispatch(getPokemonByIdOrName({id: pokeId}))
+    }, [pokeId])
+
+    useLayoutEffect(() => {
+        if(!!selectedPokemon && selectedPokemon?.id === pokeId ){
+            !selectedPokemon?.chain && dispatch(getEvolve({url: selectedPokemon?.species.url}))
             navigation.setOptions({title : selectedPokemon.name.toUpperCase()})
-        } else {
-            dispatch(setPokemon(pokeId))
         }
     }, [selectedPokemon?.id])
 
     const toggleFavorites = () => {
-        if (!isInFavorites) dispatch(addToFavorites(selectedPokemon))
-        else dispatch(removeFromFavorites(selectedPokemon))
+        if (!isInFavorites) dispatch(storeNewFavorite(selectedPokemon))
+        else dispatch(removeFavoriteFromStore(selectedPokemon))
     }
 
   return (
@@ -101,7 +104,6 @@ const styles = StyleSheet.create({
         ...globalStyle.textLarge,
         ...globalStyle.textBlue,
     },
-    
     underLine: {
         textDecorationLine: 'underline'
     },

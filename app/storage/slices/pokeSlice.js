@@ -19,6 +19,9 @@ const pokeSlice = createSlice({
             )
             state.selectedPokemon = findedPokemon
         },
+        setSelectedPokemon: (state, action) => {
+            state.selectedPokemon = action.payload
+        },
         setEvolve: (state, action) => {
             state.selectedPokemon.chain = evolveMap(action.payload)
         },
@@ -34,19 +37,26 @@ const pokeSlice = createSlice({
             state.isLoading = false
             state.error = null
             state.pokeList = action.payload
+            console.log('get pokemons : success')
+
         })
-        builder.addCase(getPokeList.pending, (state) => { state.isLoading = true })
+        builder.addCase(getPokeList.pending, (state) => { 
+            // console.log('get pokemons : pending')
+            state.isLoading = true
+         })
         builder.addCase(getPokeList.rejected, (state, action) => {
             state.error = action.payload
+            // console.log('get pokemons : error')
             state.isLoading = false
         })
+        // WIP
         builder.addCase(getEvolve.fulfilled, () => console.log('fulfilled'))
         builder.addCase(getEvolve.pending, () => console.log('pending'))
-        builder.addCase(getEvolve.rejected, (state, action) => console.log(action.payload))
+        builder.addCase(getEvolve.rejected, (_state, action) => console.log(action.payload))
     }
 })
 
-export const {setPokemon, setEvolve, setPrev, setNext, unsetPrev} = pokeSlice.actions
+export const {setPokemon, setSelectedPokemon, setEvolve, setPrev, setNext, unsetPrev} = pokeSlice.actions
 
 export default pokeSlice.reducer
 
@@ -75,11 +85,20 @@ export const getPokeList = createAsyncThunk(
             })
             .catch(rejectWithValue)
 )
+export const getPokemonByIdOrName = createAsyncThunk(
+    'pokemon/getPokemonById',
+    async (args, {rejectWithValue, dispatch} ) => {
+        console.log('on getPokemonById', args.id)
+        api.get(`https://pokeapi.co/api/v2/pokemon/${args?.id || args?.name}`)
+            .then(data => dispatch(setSelectedPokemon(data)))
+            .catch(rejectWithValue)
+    }
+)
 
 export const getEvolve = createAsyncThunk(
     'pokemon/getEvolve',
     async (args, {rejectWithValue, dispatch}) => {
-        console.log(args)
+        console.log( args)
         return api.get(args.url)
             .then(({evolution_chain}) => 
                 api.get(evolution_chain.url)

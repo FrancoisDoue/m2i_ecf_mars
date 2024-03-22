@@ -9,6 +9,8 @@ import DetailScreen from './screens/DetailScreen'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { StyleSheet } from 'react-native'
 import globalStyle, { pokeColors } from './styles/globalStyle'
+import { useSelector } from 'react-redux'
+import LoadingView from './components/shared/LoadingView'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -29,6 +31,9 @@ const PokeStack = () => {
 }
 
 const PokeNavigation = () => {
+  
+  const {isLoading} = useSelector(state => state.pokemon)
+
 
   return (
     <>
@@ -49,7 +54,7 @@ const PokeNavigation = () => {
             tabBarLabel: 'Rechercher',
             tabBarIcon: ({focused, color}) => <Icon name='search' color={color} size={focused ? 40 : 30} />
           }}/>
-          <Tab.Screen name='home'  component={PokeStack} options={{
+          <Tab.Screen name='home'  component={ (isLoading) ? LoadingView : PokeStack } options={{
             tabBarLabel: 'Pokedex',
             tabBarIcon: ({focused, color}) => <Icon name='catching-pokemon' color={color} size={focused ? 45 : 32} />
           }}/>

@@ -1,46 +1,35 @@
-// UNUSED
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api } from "../../utils/pokeapi.backend";
-
-const urls = {
-    types:' https://pokeapi.co/api/v2/type',   
-}
+import { createSlice } from "@reduxjs/toolkit";
+import { fulfilledCb, pendingCb, rejectedCb } from "../services/pokemonService";
 
 const pokeFilterSlice = createSlice({
     name: 'pokeFilter',
     initialState: {
-        availlableFilters: {},
+        namesList: [],
+        typesList: [],
         isLoading: false,
         error: null
     },
     reducers: {
+        setNamesList: (state, action) => {
+            state.namesList = action.payload
+        },
+        setTypesList: (state, action) => { 
+            state.typesList = action.payload
+        }
 
     },
-    extraReducers: ({addCase}) => {
-        addCase(fetchFilters.fulfilled, () => {
-            state.isLoading = false
-            console.log('On fullfilled')
-        })
-        addCase(fetchFilters.fulfilled, (state) => {
-            state.isLoading = true
-            console.log('On pending')
-        })
-        addCase(fetchFilters.fulfilled, () => {
-            state.isLoading = false
-            console.log('On reject')
-        })
+    extraReducers: ({addMatcher}) => {
+        addMatcher(({type}) => (type.endsWith('/fulfilled') && type.startsWith('pokeFilter')), fulfilledCb)
+        addMatcher(({type}) => (type.endsWith('/pending') && type.startsWith('pokeFilter')), pendingCb)
+        addMatcher(({type}) => (type.endsWith('/rejected') && type.startsWith('pokeFilter')), rejectedCb)
 
     }
 })
 
-export const {  } = pokeFilterSlice.actions
+export const { 
+    setNamesList,
+    setTypesList,
+} = pokeFilterSlice.actions
 
 export default pokeFilterSlice.reducer
 
-export const fetchFilters = createAsyncThunk(
-    'pokeFilter/fetchFilters',
-    async (args, {rejectWithValue}) => api.all(
-        // WIP
-    )
-    .then(rejectWithValue)
-)

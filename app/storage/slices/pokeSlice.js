@@ -1,109 +1,57 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api } from "../../utils/pokeapi.backend";
-import { evolveMap } from "../../utils/mappers";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchDetailledPokemonList, fulfilledCb, pendingCb, rejectedCb } from "../services/pokemonService";
 
 const pokeSlice = createSlice({
     name: 'pokemon',
     initialState: {
         pokeList: [],
-        prev: '',
-        next: '',
+        page: 1,
+        maxPage: 1,
+        step: 50,
         selectedPokemon: null,
         isLoading: false,
-        error: null
+        error: null,
     },
     reducers: {
-        setPokemon: (state, action) => {
-            const findedPokemon =  state.pokeList.find(
-                (pokemon) => pokemon.id === action.payload
-            )
-            state.selectedPokemon = findedPokemon
+        setPokeList : (state, action) => {
+            state.pokeList = action.payload
+        },
+        addToPokeList : (state, action) => {
+            state.pokeList.push(action.payload)
+        },
+        goToNextPage: (state) => {
+            if (state.page < state.maxPage) state.page += 1
+        },
+        goToPrevPage: (state) => {
+            if (state.page > 1) state.page -= 1
+        },
+        setMaxPage: (state, action) => {
+            const maxPage = Math.floor(action.payload / state.step)
+            state.maxPage = maxPage
         },
         setSelectedPokemon: (state, action) => {
             state.selectedPokemon = action.payload
-        },
-        setEvolve: (state, action) => {
-            state.selectedPokemon.chain = evolveMap(action.payload)
-        },
-        setPrev: (state, action) => {
-            state.prev = action.payload
-        },
-        setNext: (state, action) => {
-            state.next = action.payload
-        },
-    },
-    extraReducers: (builder) => {
-        builder.addCase(getPokeList.fulfilled, (state, action) => {
-            state.isLoading = false
-            state.error = null
-            state.pokeList = action.payload
-            console.log('get pokemons : success')
+        }
 
+    },
+    extraReducers: ({addMatcher, addCase}) => {
+        addCase(fetchDetailledPokemonList.fulfilled, (state, action) => {
+            state.pokeList = action.payload
         })
-        builder.addCase(getPokeList.pending, (state) => { 
-            // console.log('get pokemons : pending')
-            state.isLoading = true
-         })
-        builder.addCase(getPokeList.rejected, (state, action) => {
-            state.error = action.payload
-            // console.log('get pokemons : error')
-            state.isLoading = false
-        })
-        // WIP
-        builder.addCase(getEvolve.fulfilled, () => console.log('fulfilled'))
-        builder.addCase(getEvolve.pending, () => console.log('pending'))
-        builder.addCase(getEvolve.rejected, (_state, action) => console.log(action.payload))
+
+        addMatcher(({type}) => (type.endsWith('/fulfilled') && type.startsWith('pokemon')), fulfilledCb)
+        addMatcher(({type}) => (type.endsWith('/pending') && type.startsWith('pokemon')), pendingCb)
+        addMatcher(({type}) => (type.endsWith('/rejected') && type.startsWith('pokemon')), rejectedCb)
+        
     }
 })
 
-export const {setPokemon, setSelectedPokemon, setEvolve, setPrev, setNext, unsetPrev} = pokeSlice.actions
+export const {
+    setPokeList,
+    goToNextPage,
+    goToPrevPage,
+    setMaxPage,
+    setSelectedPokemon,
+} = pokeSlice.actions
 
 export default pokeSlice.reducer
-
-export const getPokeList = createAsyncThunk(
-    'pokemon/getPokeList',
-    async (args, {rejectWithValue, dispatch}) => 
-        api.get(args?.url || 'https://pokeapi.co/api/v2/pokemon?limit=100', {
-                params: args?.params || {} 
-            })
-            .then(data => {
-                if (data?.previous) {
-                    dispatch(setPrev(data.previous))
-                } else {
-                    dispatch(setPrev(''))
-                }
-                if (data?.next) {
-                    dispatch(setNext(data.next))
-                } else {
-                    dispatch(setNext(''))
-                }
-                return api.all( 
-                    data?.results ? 
-                        data.results.map((pokemon) => api.get(pokemon.url).catch(rejectWithValue)) :
-                        data.pokemon.map(({pokemon}) => api.get(pokemon.url).catch(rejectWithValue)) 
-                )
-            })
-            .catch(rejectWithValue)
-)
-export const getPokemonByIdOrName = createAsyncThunk(
-    'pokemon/getPokemonById',
-    async (args, {rejectWithValue, dispatch} ) => {
-        console.log('on getPokemonById', args.id)
-        api.get(`https://pokeapi.co/api/v2/pokemon/${args?.id || args?.name}`)
-            .then(data => dispatch(setSelectedPokemon(data)))
-            .catch(rejectWithValue)
-    }
-)
-
-export const getEvolve = createAsyncThunk(
-    'pokemon/getEvolve',
-    async (args, {rejectWithValue, dispatch}) => {
-        console.log( args)
-        return api.get(args.url)
-            .then(({evolution_chain}) => 
-                api.get(evolution_chain.url)
-                    .then((data) => dispatch(setEvolve(data.chain)))
-            )
-            .catch(rejectWithValue)
-    } 
-)

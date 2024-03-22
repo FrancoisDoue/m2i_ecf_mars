@@ -1,33 +1,42 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import PokeNavigation from './PokeNavigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { getPokeList } from './storage/slices/pokeSlice'
+// import { getPokeList } from './storage/slices/pokeSlice'
 import LoadingView from './components/shared/LoadingView'
 import { getAllFromStorage } from './storage/slices/userSlice'
+import { fetchDetailledPokemonList, fetchPokemonList, fetchTypesList } from './storage/services/pokemonService'
 
 const App = () => {
 
   const dispatch = useDispatch()
-  const pokemonIsLoading = useSelector((state) => state.pokemon.isLoading)
-  // const userIsLoading = useSelector((state) => state.user.isLoading)
+  const pokemon = useSelector((state) => state.pokemon)
+  const pokeFilter = useSelector(state => state.pokeFilter)
 
-  const initializeApp = () => {
-    dispatch(getPokeList())
-    dispatch(getAllFromStorage())
+  const initializeFilters = () => {
+    dispatch(fetchTypesList())
+    dispatch(fetchPokemonList())
+  }
+  const initializePage = () => {
+    dispatch(fetchDetailledPokemonList())
   }
 
   useLayoutEffect(() => {
-    initializeApp()
+    initializeFilters()
   }, [])
 
-  if(!pokemonIsLoading) return (
+  useEffect(() => {
+    initializePage()
+  }, [pokemon.page, pokeFilter.namesList])
+
+
+
+
+  if(!pokeFilter.isLoading) return (
     <PokeNavigation />
   )
   return (
-    <LoadingView />
-  )
-
-  
+    <LoadingView noFading />
+  )  
 }
 
 

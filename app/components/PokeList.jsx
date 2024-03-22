@@ -22,7 +22,7 @@ const PokeList = ({list, pressedAction, headerComponent, footerComponent /*, onE
       columnWrapperStyle={{justifyContent: 'center'}}
       keyExtractor={(item) => item.name}
       renderItem={({item}) => 
-          <PokeItem pokemon={item} onPress={() => pressedAction(item.id)} />
+          <PokeItem pokemon={item} /*onPress={() => pressedAction(item.id)} */ />
       }
     />
   )

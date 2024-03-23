@@ -11,6 +11,7 @@ const SearchScreen = ({navigation}) => {
   const {typesList, namesList} = useSelector(state => state.pokeFilter)
   const [searchValue, setSearchValue] = useState('')
   const [typesValue, setTypesValue] = useState([])
+  const [optimizedTypes, setOptimizedTypes] = useState([])
   const [currentNameFilter, setCurrentNameFilter] = useState(namesList)
 
   const handleInputSearch = (value) => {
@@ -31,15 +32,27 @@ const SearchScreen = ({navigation}) => {
 
   const handleTypeSearch = (type) => {
     const isInList = !!typesValue?.find(e => e.name == type.name)
+    // console.log(isInList)
     if(isInList) {
       setTypesValue(prev => prev.filter(e => e.name !== type.name))
     }else{
       setTypesValue(prev => [...prev, type])
     }
+    let namesInTypes = [...typesValue.map(e => e.pokemon).flat()]
+    // console.log(namesInTypes)
+    namesInTypes = namesInTypes.filter(element => {
+      // console.log(element)
+      const typesInArray = typesValue.map(e => e.name).length
+      // console.log(namesInTypes.filter(e => e === element).length, typesInArray, typesValue.map(e => e.name))
+      return namesInTypes.filter(e => e === element).length === typesInArray
+    })
+    setOptimizedTypes(namesInTypes)
+    // console.log(namesInTypes)
     handleInputSearch(searchValue)
   }
-  console.table(typesValue.map(e => e.name))
-  console.log(currentNameFilter.map(poke => poke.name))
+  console.log(optimizedTypes)
+  // console.log(typesValue.map(e => e.name))
+  // console.log(currentNameFilter.map(poke => poke.name))
 
   // const handleSearch = (item) => {
   //   dispatch(setFilterList(item.pokemon))

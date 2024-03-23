@@ -11,6 +11,7 @@ const responseInterceptor = [
 ]
 
 export const api = axios
+api.interceptors.response.use(...responseInterceptor)
 
 export const pokeSpeciesApi = api.create({baseURL: 'https://pokeapi.co/api/v2/pokemon-species'})
 pokeSpeciesApi.interceptors.response.use(...responseInterceptor)

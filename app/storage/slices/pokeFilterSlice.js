@@ -6,6 +6,7 @@ const pokeFilterSlice = createSlice({
     initialState: {
         namesList: [],
         typesList: [],
+        filterList: [],
         isLoading: false,
         error: null
     },
@@ -15,6 +16,9 @@ const pokeFilterSlice = createSlice({
         },
         setTypesList: (state, action) => { 
             state.typesList = action.payload
+        },
+        setFilterList: (state, action) => {
+            state.filterList = action.payload
         }
 
     },
@@ -29,6 +33,7 @@ const pokeFilterSlice = createSlice({
 export const { 
     setNamesList,
     setTypesList,
+    setFilterList,
 } = pokeFilterSlice.actions
 
 export default pokeFilterSlice.reducer

@@ -11,13 +11,14 @@ const LoadingView = ({noFading}) => {
   useEffect(() => {
     Animated.timing(fading, {
       toValue: 1,
-      duration: 300,
+      duration: 500,
       useNativeDriver: true
     }).start()
   }, [fading])
 
   return (
-    <Animated.View style={[{opacity: (noFading) ? 1 : fading}, styles.loadingScreen]}>
+    // <Animated.View style={[{opacity: (noFading) ? 1 : fading}, styles.loadingScreen]}>
+    <Animated.View style={[{opacity: fading}, styles.loadingScreen]}>
       <Image source={logo} style={styles.logo} resizeMode={"contain"} />
       <ActivityIndicator color={pokeColors.pokeWhite} size={120}/>
     </Animated.View>

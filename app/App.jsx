@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import PokeNavigation from './PokeNavigation'
 import { useDispatch, useSelector } from 'react-redux'
 // import { getPokeList } from './storage/slices/pokeSlice'
@@ -11,6 +11,7 @@ const App = () => {
   const dispatch = useDispatch()
   const pokemon = useSelector((state) => state.pokemon)
   const pokeFilter = useSelector(state => state.pokeFilter)
+  const [isInitialize, setIsInitialize] = useState(false)
 
   const initializeFilters = () => {
     dispatch(fetchTypesList())
@@ -26,12 +27,15 @@ const App = () => {
 
   useEffect(() => {
     initializePage()
-  }, [pokemon.page, pokeFilter.namesList])
+  }, [pokemon.page, pokeFilter.filterList])
+  useEffect(() => {
+    setIsInitialize(!isInitialize)
+  }, [pokeFilter.namesList])
 
 
 
 
-  if(!pokeFilter.isLoading) return (
+  if(!pokeFilter.isLoading && !isInitialize) return (
     <PokeNavigation />
   )
   return (

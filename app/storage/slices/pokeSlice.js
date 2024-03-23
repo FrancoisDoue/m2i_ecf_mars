@@ -7,7 +7,7 @@ const pokeSlice = createSlice({
         pokeList: [],
         page: 1,
         maxPage: 1,
-        step: 50,
+        step: 20,
         selectedPokemon: null,
         isLoading: false,
         error: null,
@@ -18,6 +18,9 @@ const pokeSlice = createSlice({
         },
         addToPokeList : (state, action) => {
             state.pokeList.push(action.payload)
+        },
+        setPage: (state, action) => {
+            state.page = action.payload
         },
         goToNextPage: (state) => {
             if (state.page < state.maxPage) state.page += 1
@@ -52,6 +55,7 @@ export const {
     goToPrevPage,
     setMaxPage,
     setSelectedPokemon,
+    setPage,
 } = pokeSlice.actions
 
 export default pokeSlice.reducer

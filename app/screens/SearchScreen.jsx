@@ -1,31 +1,70 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilterList } from '../storage/slices/pokeFilterSlice'
+import { setPage } from '../storage/slices/pokeSlice'
 
 const SearchScreen = ({navigation}) => {
 
-  const [nameSearch, setNameSearch] = useState()
+  const dispatch  = useDispatch()
 
-  const handleSearch = () => {
-    // if (!nameSearch) return
-    // else {
-    //   navigation.navigate('home', {
-    //     screen: 'pokedex',
-    //     params: {search: {name: nameSearch}}
-    //   })
-    //   setNameSearch('')
-    // }
+  const {typesList, namesList} = useSelector(state => state.pokeFilter)
+  const [searchValue, setSearchValue] = useState('')
+  const [typesValue, setTypesValue] = useState([])
+  const [currentNameFilter, setCurrentNameFilter] = useState(namesList)
+
+  const handleInputSearch = (value) => {
+    setSearchValue(value)
+    const currentFilteredValues = [...namesList]
+      .filter(e => 
+        (!value) ? 
+          true : 
+          e.name.includes(value.toLowerCase())
+      )
+      .filter(element => 
+        (!typesValue.length) ? 
+          true : 
+          [...typesValue.map(e => e.pokemon).flat()].find(e => element.name == e.name)
+      )
+    setCurrentNameFilter(currentFilteredValues)
   }
+
+  const handleTypeSearch = (type) => {
+    const isInList = !!typesValue?.find(e => e.name == type.name)
+    if(isInList) {
+      setTypesValue(prev => prev.filter(e => e.name !== type.name))
+    }else{
+      setTypesValue(prev => [...prev, type])
+    }
+    handleInputSearch(searchValue)
+  }
+  console.table(typesValue.map(e => e.name))
+  console.log(currentNameFilter.map(poke => poke.name))
+
+  // const handleSearch = (item) => {
+  //   dispatch(setFilterList(item.pokemon))
+  //   // dispatch(setPage(1))
+  //   // navigation.navigate('home')
+  // }
 
   return (
     <View>
-      {/* <TextInput 
-        onChangeText={setNameSearch}
-        onEndEditing={handleSearch} 
-        value={nameSearch} 
-        placeholder='Recherche par nom' 
+      <TextInput 
+        value={searchValue}
+        onChangeText={handleInputSearch}
+        placeholder='Search'
+        onSubmitEditing={() => console.log('grant')}
       />
-      <Text>SearchScreen</Text> */}
-      <Button title='Search' onPress={handleSearch} />
+      <FlatList 
+        data={typesList}
+        keyExtractor={item => item.name}
+        renderItem={({item}) => 
+          (!!item.pokemon.length) && <Pressable onPress={() => handleTypeSearch(item)} >
+            <Text>{item.name}</Text> 
+          </Pressable>
+        }
+      
+      />
     </View>
   )
 }

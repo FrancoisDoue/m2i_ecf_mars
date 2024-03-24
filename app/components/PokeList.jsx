@@ -11,7 +11,7 @@ const PokeList = ({list, headerComponent, footerComponent, navigation}) => {
   // const navigation = useNavigation()
 
   const dispatch = useDispatch()
-  const {pokeList, selectedPokemon} = useSelector(state => state.pokemon)
+  const {pokeList, selectedPokemon, step} = useSelector(state => state.pokemon)
 
   // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
   //   // https://stackoverflow.com/questions/41056761/detect-scrollview-has-reached-the-end
@@ -36,7 +36,7 @@ const PokeList = ({list, headerComponent, footerComponent, navigation}) => {
       data={list}
       numColumns={2}
       ListHeaderComponent={ headerComponent || <></> }
-      ListFooterComponent={ footerComponent || <></> }
+      ListFooterComponent={ (!!footerComponent && list.length == step) ? footerComponent : <></> }
       // onScroll={({nativeEvent}) => (!!onEnd && isCloseToBottom(nativeEvent)) && onEnd()} // pb de performance...
       // scrollEventThrottle={200}
       columnWrapperStyle={{justifyContent: 'center'}}

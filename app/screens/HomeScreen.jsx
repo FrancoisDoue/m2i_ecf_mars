@@ -10,7 +10,7 @@ const HomeScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const {page, maxPage, pokeList} = useSelector(state => state.pokemon)
-
+  console.log(maxPage)
   // const {namesList} = useSelector(state => state.pokeFilter)
   // namesList.length && console.log(namesList)
 

@@ -1,8 +1,9 @@
-import { Button, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Button, FlatList, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterList } from '../storage/slices/pokeFilterSlice'
 import { setPage } from '../storage/slices/pokeSlice'
+import { pokeColors } from '../styles/globalStyle'
 
 const SearchScreen = ({navigation}) => {
 
@@ -63,20 +64,39 @@ const SearchScreen = ({navigation}) => {
   }
 
   return (
-    <View>
-      <TextInput 
-        value={searchValue}
-        onChangeText={handleInputSearch}
-        placeholder='Search'
-        onSubmitEditing={() => console.log('grant')}
-      />
-      <Button title='search' onPress={handleSearch} />
+    <View style={styles.main}>
+      <View style={styles.inputGroup} >
+        <TextInput 
+          value={searchValue}
+          onChangeText={handleInputSearch}
+          placeholder='Search'
+          // onSubmitEditing={() => console.log('grant')}
+          style={styles.input}
+        />
+        <Pressable
+          onPress={handleSearch}
+          style={styles.searchBtn}
+        >
+          <Text>Find</Text>
+        </Pressable>
+      </View>
       <FlatList 
         data={typesList}
         keyExtractor={item => item.name}
+        scrollEnabled={false}
+        numColumns={5}
+        
         renderItem={({item}) => 
-          (!!item.pokemon.length) && <Pressable onPress={() => handleTypeSearch(item)} >
-            <Text>{item.name}</Text> 
+          (!!item.pokemon.length) && 
+          <Pressable 
+            style={(e) => [
+              styles.btnType(e), 
+              selectedTypes.find(type => type == item.name) && {borderColor: pokeColors.pokeRed}
+            ]}
+            onPress={() => handleTypeSearch(item)}
+          >
+            {/* <Text>{item.name}</Text>  */}
+            <Image source={{uri: `https://veekun.com/dex/media/types/en/${item.name}.png`}} width={60} height={26} />
           </Pressable>
         }
       
@@ -87,4 +107,43 @@ const SearchScreen = ({navigation}) => {
 
 export default SearchScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: pokeColors.pokeRed
+  },
+  inputGroup: {
+    width: '90%',
+    flexDirection: 'row'
+  },
+  searchBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '19%',
+    // backgroundColor: 'white'
+  },
+  input: {
+    width: '80%',
+    borderStartWidth: 2,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
+    // marginTop: 40,
+    borderColor: pokeColors.pokeDarkRed,
+    backgroundColor: pokeColors.pokeWhite,
+    // borderLeftRadius: 1000,
+    borderTopLeftRadius: 100,
+    borderBottomLeftRadius: 100,
+    paddingHorizontal: 20,
+  },
+  btnType: ({pressed}) => ({
+    padding: 2,
+    margin: 4,
+    borderWidth: 2,
+    borderRadius: 3,
+    borderColor: (pressed) ? pokeColors.pokeRed : pokeColors.pokeWhite,
+    backgroundColor: pokeColors.pokeWhite,
+    elevation: (pressed) ? 1 : 4
+  }),
+})

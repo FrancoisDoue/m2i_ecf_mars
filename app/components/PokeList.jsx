@@ -36,7 +36,7 @@ const PokeList = ({list, headerComponent, footerComponent, navigation}) => {
       data={list}
       numColumns={2}
       ListHeaderComponent={ headerComponent || <></> }
-      ListFooterComponent={ (!!footerComponent && list.length == step) ? footerComponent : <></> }
+      ListFooterComponent={ (!!footerComponent && list?.length == step) ? footerComponent : <></> }
       // onScroll={({nativeEvent}) => (!!onEnd && isCloseToBottom(nativeEvent)) && onEnd()} // pb de performance...
       // scrollEventThrottle={200}
       columnWrapperStyle={{justifyContent: 'center'}}

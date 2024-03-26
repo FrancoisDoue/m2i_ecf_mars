@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setFilterList, setNamesList, setTypesList } from "../slices/pokeFilterSlice"
 import { api, pokeSpeciesApi, pokemonApi, typesApi } from "../../utils/pokeapi.backend"
-import { setMaxPage, setPage, setPokeList } from "../slices/pokeSlice"
+import { setMaxPage, setSelectedPokemon } from "../slices/pokeSlice"
 
 
 // generic callbacks for extraReducers
@@ -57,12 +57,14 @@ export const fetchTypesList = createAsyncThunk(
 )
 export const fetchPokemon = createAsyncThunk(
     'pokemon/fetchPokemon',
-    async ({name, id, willDispatch = true}, {rejectWithValue, dispatch}) => {
+    async ({name, id, /*willDispatch = true*/}, {rejectWithValue, dispatch}) => {
         return pokemonApi.get(`/${name || id}`)
             .then((datas) => {
                 console.log(datas.name)
-                if (!!willDispatch) return dispatch(setSelectedPokemon(datas))
-                return datas
+                // if (!!willDispatch) return dispatch(setSelectedPokemon(datas))
+                dispatch(setSelectedPokemon(datas))
+                
+                // return datas
             })
             .catch( rejectWithValue )
     }

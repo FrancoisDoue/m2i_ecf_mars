@@ -48,6 +48,7 @@ const PokeNavigation = () => {
             tabBarLabelStyle: globalStyle.textSmall,
             tabBarInactiveTintColor: pokeColors.pokeBlue,
             tabBarActiveTintColor: pokeColors.pokeDarkRed,
+            tabBarHideOnKeyboard: true,
           }}
         >
           <Tab.Screen name='search' component={SearchScreen} options={{

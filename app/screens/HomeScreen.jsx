@@ -10,14 +10,7 @@ const HomeScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const {page, maxPage, pokeList} = useSelector(state => state.pokemon)
-  console.log(maxPage)
-  // const {namesList} = useSelector(state => state.pokeFilter)
-  // namesList.length && console.log(namesList)
 
-  // const handlePokeNavigation = (id) => {
-  //   console.log(id)
-  //   // navigation.navigate('pokedetail', { pokeId: id })
-  // }
   const handlePrev = () => dispatch(goToPrevPage())
   const handleNext = () => dispatch(goToNextPage())
 
@@ -34,7 +27,6 @@ const HomeScreen = ({ navigation }) => {
         }
         list={pokeList} 
         navigation={navigation}
-        // pressedAction={handlePokeNavigation} 
       />
     </GradientView>
   )

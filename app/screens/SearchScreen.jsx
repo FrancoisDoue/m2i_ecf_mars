@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterList } from '../storage/slices/pokeFilterSlice'
 import { setPage } from '../storage/slices/pokeSlice'
-import { pokeColors } from '../styles/globalStyle'
+import globalStyle, { pokeColors } from '../styles/globalStyle'
+import PokeButton from '../components/shared/PokeButton'
+import PressablePokeType from '../components/PressablePokeType'
+import GradientView from '../components/shared/GradientView'
 
 const SearchScreen = ({navigation}) => {
 
@@ -35,11 +38,11 @@ const SearchScreen = ({navigation}) => {
   }
 
   const handleTypeSearch = (type) => {
-    const isInList = selectedTypes?.some(e => e == type.name)
+    const isInList = selectedTypes?.some(e => e == type)
     if(isInList) {
-      setSelectedTypes(prev => prev.filter(e => e != type.name))
+      setSelectedTypes(prev => prev.filter(e => e != type))
     }else{
-      setSelectedTypes(prev => [...prev, type.name])
+      setSelectedTypes(prev => [...prev, type])
     }
   }
 
@@ -64,86 +67,102 @@ const SearchScreen = ({navigation}) => {
   }
 
   return (
-    <View style={styles.main}>
+    <GradientView>
+      <View style={styles.paramsContainer}>
+        <Text style={[globalStyle.textXLarge, globalStyle.textWhite, styles.headerResults]}>Search</Text>
+        {(!!searchValue || !!selectedTypes.length) &&
+          <Text style={[globalStyle.textMedium, globalStyle.textWhite, styles.infoResults]}>{currentNameFilter.length} finded pokemons</Text>
+        }
+      </View>
       <View style={styles.inputGroup} >
         <TextInput 
           value={searchValue}
           onChangeText={handleInputSearch}
-          placeholder='Search'
-          // onSubmitEditing={() => console.log('grant')}
+          placeholder="Pokemon's name"
+          // onSubmitEditing={() => console.log('test')}
           style={styles.input}
         />
-        <Pressable
-          onPress={handleSearch}
-          style={styles.searchBtn}
-        >
-          <Text>Find</Text>
-        </Pressable>
       </View>
-      <FlatList 
-        data={typesList}
-        keyExtractor={item => item.name}
-        scrollEnabled={false}
-        numColumns={5}
-        
-        renderItem={({item}) => 
-          (!!item.pokemon.length) && 
-          <Pressable 
-            style={(e) => [
-              styles.btnType(e), 
-              selectedTypes.find(type => type == item.name) && {borderColor: pokeColors.pokeRed}
-            ]}
-            onPress={() => handleTypeSearch(item)}
-          >
-            {/* <Text>{item.name}</Text>  */}
-            <Image source={{uri: `https://veekun.com/dex/media/types/en/${item.name}.png`}} width={60} height={26} />
-          </Pressable>
-        }
-      
-      />
-    </View>
+      <View style={styles.typesContainer}>
+        <Text style={styles.typesText}>Select types : </Text>
+        <FlatList 
+          data={typesList}
+          keyExtractor={item => item.name}
+          scrollEnabled={false}
+          numColumns={5}
+          
+          renderItem={({item}) => (!!item.pokemon.length) &&
+            <PressablePokeType nameType={item.name} action={handleTypeSearch} types={selectedTypes}/> 
+          }
+        />
+      </View>
+      <View style={styles.validGroup}>
+        <PokeButton 
+          title='Search' 
+          variant 
+          iconVariant='search'
+          disabled={!currentNameFilter.length}
+          onPress={handleSearch}
+        />
+      </View>
+
+    </GradientView>
   )
 }
-
 export default SearchScreen
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: pokeColors.pokeRed
+  headerResults: {
+    marginTop: 50,
+    textAlign: 'center',
+  },
+  infoResults: {
+    // marginVertical: 50,
+    marginHorizontal: 25,
+  },
+  paramsContainer: {
+    flex: 0.3,
+    minHeight: 70,
+    width: '100%'
+  },
+  typesContainer: {
+    flex: .4,
+    minHeight: 200,
+    width: '100%',
+    alignItems: 'center'
+  },
+  typesText: {
+    ... globalStyle.textLarge,
+    padding: 10,
+    marginHorizontal: 10,
+    color: pokeColors.pokeBlack,
   },
   inputGroup: {
-    width: '90%',
-    flexDirection: 'row'
-  },
-  searchBtn: {
+    width: '100%',
+    flexDirection: 'row',
+    padding: 10,
     justifyContent: 'center',
-    alignItems: 'center',
-    width: '19%',
-    // backgroundColor: 'white'
+    // backgroundColor: pokeColors.pokeDarkRed
   },
   input: {
     width: '80%',
-    borderStartWidth: 2,
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    // marginTop: 40,
-    borderColor: pokeColors.pokeDarkRed,
+    borderWidth: 2,
+    borderColor: pokeColors.pokeGold,
     backgroundColor: pokeColors.pokeWhite,
-    // borderLeftRadius: 1000,
-    borderTopLeftRadius: 100,
-    borderBottomLeftRadius: 100,
+    borderRadius: 5,
     paddingHorizontal: 20,
   },
-  btnType: ({pressed}) => ({
-    padding: 2,
-    margin: 4,
-    borderWidth: 2,
-    borderRadius: 3,
-    borderColor: (pressed) ? pokeColors.pokeRed : pokeColors.pokeWhite,
-    backgroundColor: pokeColors.pokeWhite,
-    elevation: (pressed) ? 1 : 4
-  }),
+  validGroup: {
+    alignItems: 'center'
+  }
+
+  // btnType: ({pressed}) => ({
+  //   padding: 2,
+  //   margin: 4,
+  //   borderWidth: 2,
+  //   borderRadius: 3,
+  //   borderColor: (pressed) ? pokeColors.pokeRed : pokeColors.pokeWhite,
+  //   backgroundColor: pokeColors.pokeWhite,
+  //   elevation: (pressed) ? 1 : 4
+  // }),
 })

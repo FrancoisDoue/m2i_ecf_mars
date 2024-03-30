@@ -1,26 +1,22 @@
-import {
-  Button,
-  FlatList,
-  Pressable,
-  RefreshControl,
-  StyleSheet,
-  Text,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { FlatList, Pressable, StyleSheet } from 'react-native';
+import React from 'react';
 import PokeItem from './PokeItem';
 import {useDispatch, useSelector} from 'react-redux';
 import {pokeColors} from '../styles/globalStyle';
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import {goToNextPage, goToPrevPage} from '../storage/slices/pokeSlice';
+import { useNavigation } from '@react-navigation/native';
 
-const PokeList = ({list}) => {
+const PokeList = ({list, isFavoritesScreen}) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation()
 
   const {step, page} = useSelector(state => state.pokemon);
 
-  const PressableFooter = () => {
+  const PressableElement = ({direction, onPress}) => {
     return (
-      <Pressable>
-        <Text>Test</Text>
+      <Pressable onPress={onPress}>
+        <Icon name={`keyboard-arrow-${direction}`} size={40} color={pokeColors.pokeBlue} />
       </Pressable>
     );
   };
@@ -29,18 +25,17 @@ const PokeList = ({list}) => {
     <FlatList
       data={list}
       numColumns={2}
+      fadingEdgeLength={10}
       ListHeaderComponent={
-        page > 1 && (
-          <Button title="Précédents" color={pokeColors.pokeDarkRed} onPress={() => dispatch(goToPrevPage())} />
-        )
+        (page > 1 && !isFavoritesScreen) &&
+          <PressableElement direction={'up'} onPress={() => dispatch(goToPrevPage())} />
       }
+      ListHeaderComponentStyle={styles.pressableElement}
       ListFooterComponent={
-        list?.length == step && (
-          //   <Button title='Suivants' color={pokeColors.pokeBlue}  onPress={() => dispatch(goToNextPage())} />
-          <PressableFooter />
-        )
+        list?.length == step && 
+          <PressableElement direction={'down'} onPress={() => dispatch(goToNextPage())}/>
       }
-      ListFooterComponentStyle={styles.footerComponent}
+      ListFooterComponentStyle={styles.pressableElement}
       columnWrapperStyle={{justifyContent: 'center'}}
       keyExtractor={item => item.name}
       renderItem={({item}) => <PokeItem pokemon={item} />}
@@ -52,9 +47,13 @@ const PokeList = ({list}) => {
 export default PokeList;
 
 const styles = StyleSheet.create({
-  footerComponent: {
-    padding: 40,
+  pressableElement: {
+    padding: 10,
+    display: 'flex',
+    alignItems: 'center',
     width: '100%',
+    backgroundColor: pokeColors.pokeWhite,
+    opacity: .35,
   },
 });
 

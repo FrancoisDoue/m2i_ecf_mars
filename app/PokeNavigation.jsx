@@ -36,39 +36,37 @@ const PokeNavigation = () => {
 
 
   return (
-    <>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName='home'
-          screenOptions={{
-            headerShown: false,
-            headerStyle: styles.headerStyle,
-            headerTintColor: pokeColors.pokeWhite,
-            tabBarStyle: styles.tabBarStyle,
-            tabBarLabelStyle: globalStyle.textSmall,
-            tabBarInactiveTintColor: pokeColors.pokeBlue,
-            tabBarActiveTintColor: pokeColors.pokeDarkRed,
-            tabBarHideOnKeyboard: true,
-          }}
-        >
-          <Tab.Screen name='search' component={SearchScreen} options={{
-            tabBarLabel: 'Rechercher',
-            tabBarIcon: ({focused, color}) => <Icon name='search' color={color} size={focused ? 40 : 30} />
-          }}/>
-          <Tab.Screen name='home'  component={ (isLoading) ? LoadingView : PokeStack } options={{
-            tabBarLabel: 'Pokedex',
-            tabBarIcon: ({focused, color}) => <Icon name='catching-pokemon' color={color} size={focused ? 45 : 32} />
-          }}/>
-          <Tab.Screen name='favorites' component={FavoritesScreen} options={{
-            tabBarLabel: 'Mes Pokemons',
-            tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />,
-            headerShown: true,
-            title: 'Mes Pokemons'
-          }}/>
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName='home'
+        screenOptions={{
+          headerShown: false,
+          headerStyle: styles.headerStyle,
+          headerTintColor: pokeColors.pokeWhite,
+          tabBarStyle: styles.tabBarStyle,
+          tabBarLabelStyle: globalStyle.textSmall,
+          tabBarInactiveTintColor: pokeColors.pokeBlue,
+          tabBarActiveTintColor: pokeColors.pokeDarkRed,
+          tabBarHideOnKeyboard: true,
+        }}
+      >
+        <Tab.Screen name='search' component={SearchScreen} options={{
+          tabBarLabel: 'Rechercher',
+          tabBarIcon: ({focused, color}) => <Icon name='search' color={color} size={focused ? 40 : 30} />
+        }}/>
+        <Tab.Screen name='home'  component={(isLoading) ? LoadingView : PokeStack } options={{
+          tabBarLabel: 'Pokedex',
+          tabBarIcon: ({focused, color}) => <Icon name='catching-pokemon' color={color} size={focused ? 45 : 32} />
+        }}/>
+        <Tab.Screen name='favorites' component={FavoritesScreen} options={{
+          tabBarLabel: 'Mes Pokemons',
+          tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />,
+          headerShown: true,
+          title: 'Mes Pokemons'
+        }}/>
 
-        </Tab.Navigator>
-      </NavigationContainer>
-    </>
+      </Tab.Navigator>
+    </NavigationContainer>
   )
 }
 

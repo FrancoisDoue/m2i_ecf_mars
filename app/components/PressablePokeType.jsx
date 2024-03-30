@@ -1,6 +1,7 @@
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import { pokeColors } from '../styles/globalStyle';
+import PokeType from './shared/PokeType';
 
 const PressablePokeType = ({action, disabled, nameType, types}) => {
   return (
@@ -14,12 +15,7 @@ const PressablePokeType = ({action, disabled, nameType, types}) => {
         },
       ]}
       onPress={() => action(nameType)}>
-      {/* <Text>{item.name}</Text>  */}
-      <Image
-        source={{uri: `https://veekun.com/dex/media/types/en/${nameType}.png`}}
-        width={60}
-        height={26}
-      />
+        <PokeType type={nameType} />
     </Pressable>
   );
 };

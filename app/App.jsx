@@ -28,6 +28,7 @@ const App = () => {
   useEffect(() => {
     initializePage()
   }, [pokemon.page, pokeFilter.filterList])
+  
   useEffect(() => {
     setIsInitialize(!isInitialize)
   }, [pokeFilter.namesList])

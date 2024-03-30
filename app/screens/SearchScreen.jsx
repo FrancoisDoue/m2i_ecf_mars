@@ -1,4 +1,4 @@
-import { Button, FlatList, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterList } from '../storage/slices/pokeFilterSlice'
@@ -32,8 +32,6 @@ const SearchScreen = ({navigation}) => {
         }
         return true
       })
-    // console.log(value, selectedTypes)
-    // console.log(currentFilteredValues.length, currentFilteredValues.map(e => e.name))
     setCurrentNameFilter([...currentFilteredValues])
   }
 
@@ -61,9 +59,15 @@ const SearchScreen = ({navigation}) => {
   }, [selectedTypes])
 
   const handleSearch = () => {
+    const params = (!!searchValue || !!selectedTypes.length)
+      ? {searchName: searchValue, searchTypes: selectedTypes}
+      : null
     dispatch(setFilterList(currentNameFilter))
     dispatch(setPage(1))
-    navigation.navigate('home')
+    navigation.navigate('home', {
+      screen: 'pokedex',
+      params: params
+    })
   }
 
   return (
@@ -117,7 +121,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   infoResults: {
-    // marginVertical: 50,
     marginHorizontal: 25,
   },
   paramsContainer: {
@@ -142,7 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     justifyContent: 'center',
-    // backgroundColor: pokeColors.pokeDarkRed
   },
   input: {
     width: '80%',
@@ -155,14 +157,4 @@ const styles = StyleSheet.create({
   validGroup: {
     alignItems: 'center'
   }
-
-  // btnType: ({pressed}) => ({
-  //   padding: 2,
-  //   margin: 4,
-  //   borderWidth: 2,
-  //   borderRadius: 3,
-  //   borderColor: (pressed) ? pokeColors.pokeRed : pokeColors.pokeWhite,
-  //   backgroundColor: pokeColors.pokeWhite,
-  //   elevation: (pressed) ? 1 : 4
-  // }),
 })

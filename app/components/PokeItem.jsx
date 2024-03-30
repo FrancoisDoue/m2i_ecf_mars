@@ -12,7 +12,7 @@ const PokeItem = ({pokemon, onPress}) => {
   const dispatch = useDispatch();
 
   const favorites = useSelector(state => state.user.favorites);
-  const {pokeList, selectedPokemon} = useSelector(state => state.pokemon);
+  const {pokeList} = useSelector(state => state.pokemon);
   const isInFavorites = favorites.some(fav => fav.id == pokemon.id);
 
   const handlePokeNavigation = item => {

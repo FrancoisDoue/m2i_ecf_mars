@@ -5,11 +5,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {pokeColors} from '../styles/globalStyle';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {goToNextPage, goToPrevPage} from '../storage/slices/pokeSlice';
-import { useNavigation } from '@react-navigation/native';
 
 const PokeList = ({list, isFavoritesScreen}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation()
 
   const {step, page} = useSelector(state => state.pokemon);
 

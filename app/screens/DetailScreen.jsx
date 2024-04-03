@@ -11,6 +11,8 @@ import PokeButton from '../components/shared/PokeButton';
 const DetailScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {selectedPokemon} = useSelector(state => state.pokemon);
+  console.log(selectedPokemon)
+  console.log(selectedPokemon)
   const {favorites} = useSelector(state => state.user);
 
   const isInFavorites = !!favorites.find(fav => fav.id === selectedPokemon.id);
@@ -21,7 +23,9 @@ const DetailScreen = ({navigation}) => {
   };
 
   useLayoutEffect(() => {
-    navigation.setOptions({title: selectedPokemon.name.toUpperCase()})
+    navigation.setOptions({
+      title: selectedPokemon.name.toUpperCase()
+    })
   }, [selectedPokemon])
 
   return (
@@ -29,10 +33,7 @@ const DetailScreen = ({navigation}) => {
       {!!selectedPokemon && (
         <>
           <Image
-            source={{
-              uri: selectedPokemon.sprites.other['official-artwork']
-                .front_default,
-            }}
+            source={{uri: selectedPokemon.sprites.other['official-artwork'].front_default}}
             width={300}
             height={300}
           />

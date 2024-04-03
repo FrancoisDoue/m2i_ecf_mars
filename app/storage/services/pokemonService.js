@@ -20,6 +20,13 @@ export const rejectedCb = (state, action) => {
     state.error = action.error
 }
 
+// axios locale action
+const axiosFetchPokemon = async (name) => {
+    const desc = await pokeSpeciesApi.get(`/${name}`)
+    const pokemon = await pokemonApi.get(`/${name}`)
+    return {...pokemon, ...desc}
+}
+
 // used for pokeFilters
 export const fetchPokemonList = createAsyncThunk(
     'pokeFilter/fetchPokemonList',
@@ -57,18 +64,29 @@ export const fetchTypesList = createAsyncThunk(
 )
 export const fetchPokemon = createAsyncThunk(
     'pokemon/fetchPokemon',
-    async ({name, id, /*willDispatch = true*/}, {rejectWithValue, dispatch}) => {
-        return pokemonApi.get(`/${name || id}`)
-            .then((datas) => {
-                console.log(datas.name)
-                // if (!!willDispatch) return dispatch(setSelectedPokemon(datas))
-                dispatch(setSelectedPokemon(datas))
+    async ({name, /*willDispatch = true*/}, {rejectWithValue, dispatch}) => {
+        try {
+            const pokemon = await axiosFetchPokemon(name)
+            dispatch(setSelectedPokemon(pokemon))
+        } catch (error) {
+            rejectWithValue(error)
+        }
+        // return axiosFetchPokemon(name)
+        //     .then(datas => {
+        //         // console.log(datas)
+        //         dispatch(setSelectedPokemon(datas))
+        //     })
+        //     .catch()
+        // return pokemonApi.get(`/${name || id}`)
+        //     .then((datas) => {
+        //         console.log(datas)
+        //         // if (!!willDispatch) return dispatch(setSelectedPokemon(datas))
+        //         dispatch(setSelectedPokemon(datas))
                 
-                // return datas
-            })
-            .catch( rejectWithValue )
+        //         // return datas
+        //     })
+        //     .catch( rejectWithValue )
     }
-
 )
 export const fetchDetailledPokemonList = createAsyncThunk(
     'pokemon/fetchDetailledPokemonList',
@@ -80,7 +98,15 @@ export const fetchDetailledPokemonList = createAsyncThunk(
             console.log(fromPokemon, toPokemon)
             const list = pokeFilter.filterList.slice(fromPokemon, toPokemon)
             return api.all(
-                list.map(monster => pokemonApi.get(`${ monster?.pokemon?.name || monster.name}`))
+                list.map(async (monster) => {
+                    const name = monster?.pokemon?.name || monster.name
+                    // const desc = await pokeSpeciesApi.get(`/${name}`)
+                    // const pokemon = await pokemonApi.get(`/${name}`)
+                    // // console.log({...pokemon, ... desc}.sprites)
+                    // return {...pokemon, ...desc}
+                    return await axiosFetchPokemon(name)
+                    
+                })
             )
             .catch(rejectWithValue)
         }

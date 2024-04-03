@@ -7,7 +7,7 @@ import {setSelectedPokemon} from '../storage/slices/pokeSlice';
 import {fetchPokemon} from '../storage/services/pokemonService';
 import {useNavigation} from '@react-navigation/native';
 
-const PokeItem = ({pokemon, onPress}) => {
+const PokeItem = ({pokemon}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -15,14 +15,13 @@ const PokeItem = ({pokemon, onPress}) => {
   const {pokeList} = useSelector(state => state.pokemon);
   const isInFavorites = favorites.some(fav => fav.id == pokemon.id);
 
-  const handlePokeNavigation = item => {
-    console.log(pokeList.some(({id}) => item.id == id));
+  const handlePokeNavigation = (item) => {
     if (pokeList.some(({id}) => item.id == id)) {
       dispatch(setSelectedPokemon(item));
     } else {
       dispatch(fetchPokemon(item));
     }
-    navigation.navigate('pokedetail');
+    navigation.navigate('home', {screen:'pokedetail'})
   };
 
   const styles = StyleSheet.create({

@@ -29,7 +29,7 @@ const HomeScreen = ({ navigation, route }) => {
             <View style={styles.typesBearer}>
               <Text style={styles.headerTextResult}>type{searchTypes.length > 1 ? 's' : ''} : </Text>
               {searchTypes.map((e, i) => 
-                <PokeType key={i} type={e} width={40} height={17}/>)
+                <PokeType style={styles.pokeType} key={i} type={e} width={40} height={17}/>)
               }
             </View> }
           </View>
@@ -57,6 +57,9 @@ const styles = StyleSheet.create({
   },
   typesBearer: {
     flexDirection: 'row'
+  },
+  pokeType: {
+    margin: 2,
   },
   headerTextResult: {
     ...globalStyle.textWhite,

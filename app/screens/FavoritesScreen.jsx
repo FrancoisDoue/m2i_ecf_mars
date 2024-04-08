@@ -7,6 +7,7 @@ import GradientView from '../components/shared/GradientView'
 const FavoritesScreen = () => {
 
     const { favorites } = useSelector(state => state.user)
+    console.log(favorites)
 
     return (
         <GradientView>

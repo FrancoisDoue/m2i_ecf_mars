@@ -8,6 +8,8 @@ import { addFavorite, removeFavorite } from '../storage/services/storageService'
 const DetailScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {selectedPokemon} = useSelector(state => state.pokemon);
+  console.log(selectedPokemon)
+  console.log(selectedPokemon)
   const {favorites} = useSelector(state => state.user);
 
   const isInFavorites = favorites.some(({name}) => name === selectedPokemon.name);

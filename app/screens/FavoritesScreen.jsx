@@ -4,7 +4,7 @@ import PokeList from '../components/PokeList'
 import GradientView from '../components/shared/GradientView'
 
 
-const FavoritesScreen = ({ navigation }) => {
+const FavoritesScreen = () => {
 
     const { favorites } = useSelector(state => state.user)
 

@@ -11,14 +11,10 @@ const DetailScreen = ({navigation}) => {
   const {favorites} = useSelector(state => state.user);
 
   const isInFavorites = favorites.some(({name}) => name === selectedPokemon.name);
-  console.log(selectedPokemon.name)
-  console.log(favorites.map(fav => fav.name))
 
   const toggleFavorites = () => {
     if (!isInFavorites) dispatch(addFavorite(selectedPokemon))
     else dispatch(removeFavorite(selectedPokemon.name))
-    // if (!isInFavorites) dispatch(storeNewFavorite(selectedPokemon));
-    // else dispatch(removeFavoriteFromStore(selectedPokemon));
   };
 
   useLayoutEffect(() => {
@@ -33,8 +29,7 @@ const DetailScreen = ({navigation}) => {
         <>
           <Image
             source={{
-              uri: selectedPokemon.sprites.other['official-artwork']
-                .front_default,
+              uri: selectedPokemon.sprites.other['official-artwork'].front_default,
             }}
             width={300}
             height={300}

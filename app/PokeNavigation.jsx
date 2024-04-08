@@ -33,6 +33,9 @@ const FavoritesStack = () => {
   return (
     <Stack.Navigator
       initialRouteName='favoritesList'
+      screenOptions={{
+        headerTintColor: pokeColors.pokeBlue,
+      }}
     >
       <Stack.Screen name='favoritesList' component={FavoritesScreen} options={{headerShown: false}} />
       <Stack.Screen name='pokedetail' component={DetailScreen} />
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
   },
   headerStyle: {
     backgroundColor: pokeColors.pokeRed
-  }
+  },
 })
 
 export default PokeNavigation

@@ -23,7 +23,6 @@ export const removeFavorite = createAsyncThunk(
                 res = JSON.parse(res) || []
                 const newList = res.filter(favName => favName !== name)
                 dispatch(storeFavorites(newList))
-                // here! Removing pokemon cleanly required
                 dispatch(removeFromFavorites(name))
             })
             .catch(rejectWithValue)
@@ -53,9 +52,15 @@ export const getFavorites = createAsyncThunk(
                 result = JSON.parse(result) || []
                 dispatch(setNameList(result))
                 console.log(result)
-                result = result.filter(e => !favorites.some(({name}) => name === e))
+                // result = result.filter(e => !favorites.some(({name}) => name === e))
                 api.all(
-                    result.map(async (name) => await axiosFetchCompletePokemon(name))
+                    result.map(async (name) => {
+                        if (favorites.some((pokemon) => pokemon.name == name )){
+                            return pokemon
+                        }
+                        return axiosFetchCompletePokemon(name)
+
+                    })
                 )
                 .then(result => dispatch(setFavorites(result)))
                 .catch(rejectWithValue)

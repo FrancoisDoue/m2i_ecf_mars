@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setFilterList, setNamesList, setTypesList } from "../slices/pokeFilterSlice"
 import { api, pokeSpeciesApi, pokemonApi, typesApi } from "../../utils/pokeapi.backend"
 import { setMaxPage, setSelectedPokemon } from "../slices/pokeSlice"
+import Pokemon from "../../utils/Pokemon"
 
 
 // generic callbacks for extraReducers
@@ -24,6 +25,8 @@ export const axiosFetchCompletePokemon = async (name) => {
     try {
         const species = await pokeSpeciesApi.get(`/${name}`)
         const pokemon = await pokemonApi.get(`/${name}`)
+        const buildedPokemon = new Pokemon({...species, ...pokemon})
+        console.log(buildedPokemon)
         return {...species, ...pokemon}
     } catch (error) {
         throw error

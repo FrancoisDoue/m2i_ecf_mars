@@ -1,3 +1,5 @@
+// pour archive
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../utils/pokeapi.backend";
 import { evolveMap } from "../../utils/mappers";

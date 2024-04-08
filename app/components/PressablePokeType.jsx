@@ -1,4 +1,4 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import { pokeColors } from '../styles/globalStyle';
 import PokeType from './shared/PokeType';

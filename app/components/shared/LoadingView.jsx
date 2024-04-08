@@ -1,5 +1,5 @@
-import { Image, StyleSheet, View, ActivityIndicator, Animated } from 'react-native'
-import React, { useEffect, useLayoutEffect, useRef } from 'react'
+import { Image, StyleSheet, ActivityIndicator, Animated } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import { pokeColors } from '../../styles/globalStyle'
 import logo from '../../assets/pokemonLogo.png'
 

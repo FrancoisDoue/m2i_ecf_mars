@@ -4,24 +4,17 @@ import globalStyle, {pokeColors} from '../styles/globalStyle';
 import {useDispatch, useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {setSelectedPokemon} from '../storage/slices/pokeSlice';
-import {fetchPokemon} from '../storage/services/pokemonService';
 import {useNavigation} from '@react-navigation/native';
 
-const PokeItem = ({pokemon, onPress}) => {
+const PokeItem = ({pokemon}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const favorites = useSelector(state => state.user.favorites);
-  const {pokeList} = useSelector(state => state.pokemon);
-  const isInFavorites = favorites.some(fav => fav.id == pokemon.id);
+  const isInFavorites = favorites.some(({name}) => name == pokemon.name);
 
-  const handlePokeNavigation = item => {
-    console.log(pokeList.some(({id}) => item.id == id));
-    if (pokeList.some(({id}) => item.id == id)) {
-      dispatch(setSelectedPokemon(item));
-    } else {
-      dispatch(fetchPokemon(item));
-    }
+  const handlePokeNavigation = (item) => {
+    dispatch(setSelectedPokemon(item));
     navigation.navigate('pokedetail');
   };
 
@@ -60,7 +53,7 @@ const PokeItem = ({pokemon, onPress}) => {
   });
 
   const pokeImg = isInFavorites
-    ? pokemon.sprites.other.showdown.front_default || pokemon.sprites.front_default
+    ? pokemon.sprites?.other.showdown.front_default || pokemon.sprites.front_default
     : pokemon.sprites.front_default;
 
   return (

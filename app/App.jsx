@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import LoadingView from './components/shared/LoadingView'
 import { getAllFromStorage } from './storage/slices/userSlice'
 import { fetchDetailledPokemonList, fetchPokemonList, fetchTypesList } from './storage/services/pokemonService'
+import { getFavorites } from './storage/services/storageService'
 
 const App = () => {
 
@@ -18,11 +19,12 @@ const App = () => {
   }
   const initializePage = () => {
     dispatch(fetchDetailledPokemonList())
+    dispatch(getFavorites())
   }
 
   useLayoutEffect(() => {
     initializeFilters()
-    dispatch(getAllFromStorage())
+    dispatch(getFavorites())
   }, [])
 
   useEffect(() => {

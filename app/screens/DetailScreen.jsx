@@ -1,27 +1,30 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React, { useLayoutEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  removeFavoriteFromStore,
-  storeNewFavorite,
-} from '../storage/slices/userSlice';
 import globalStyle, {pokeColors} from '../styles/globalStyle';
 import PokeButton from '../components/shared/PokeButton';
+import { addFavorite, removeFavorite } from '../storage/services/storageService';
 
 const DetailScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {selectedPokemon} = useSelector(state => state.pokemon);
   const {favorites} = useSelector(state => state.user);
 
-  const isInFavorites = !!favorites.find(fav => fav.id === selectedPokemon.id);
+  const isInFavorites = favorites.some(({name}) => name === selectedPokemon.name);
+  console.log(selectedPokemon.name)
+  console.log(favorites.map(fav => fav.name))
 
   const toggleFavorites = () => {
-    if (!isInFavorites) dispatch(storeNewFavorite(selectedPokemon));
-    else dispatch(removeFavoriteFromStore(selectedPokemon));
+    if (!isInFavorites) dispatch(addFavorite(selectedPokemon))
+    else dispatch(removeFavorite(selectedPokemon.name))
+    // if (!isInFavorites) dispatch(storeNewFavorite(selectedPokemon));
+    // else dispatch(removeFavoriteFromStore(selectedPokemon));
   };
 
   useLayoutEffect(() => {
-    navigation.setOptions({title: selectedPokemon.name.toUpperCase()})
+    navigation.setOptions({
+      title: selectedPokemon.name.toUpperCase(),
+    })
   }, [selectedPokemon])
 
   return (

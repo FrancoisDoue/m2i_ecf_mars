@@ -20,6 +20,16 @@ export const rejectedCb = (state, action) => {
     state.error = action.error
 }
 
+export const axiosFetchCompletePokemon = async (name) => {
+    try {
+        const species = await pokeSpeciesApi.get(`/${name}`)
+        const pokemon = await pokemonApi.get(`/${name}`)
+        return {...species, ...pokemon}
+    } catch (error) {
+        throw error
+    }
+}
+
 // used for pokeFilters
 export const fetchPokemonList = createAsyncThunk(
     'pokeFilter/fetchPokemonList',
@@ -58,7 +68,7 @@ export const fetchTypesList = createAsyncThunk(
 export const fetchPokemon = createAsyncThunk(
     'pokemon/fetchPokemon',
     async ({name, id, /*willDispatch = true*/}, {rejectWithValue, dispatch}) => {
-        return pokemonApi.get(`/${name || id}`)
+        axiosFetchCompletePokemon(name)
             .then((datas) => {
                 console.log(datas.name)
                 // if (!!willDispatch) return dispatch(setSelectedPokemon(datas))
@@ -80,7 +90,7 @@ export const fetchDetailledPokemonList = createAsyncThunk(
             console.log(fromPokemon, toPokemon)
             const list = pokeFilter.filterList.slice(fromPokemon, toPokemon)
             return api.all(
-                list.map(monster => pokemonApi.get(`${ monster?.pokemon?.name || monster.name}`))
+                list.map(monster => axiosFetchCompletePokemon(monster?.pokemon?.name || monster.name))
             )
             .catch(rejectWithValue)
         }

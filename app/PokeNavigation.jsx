@@ -15,7 +15,7 @@ import LoadingView from './components/shared/LoadingView'
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
-const PokeStack = () => {
+const PokedexStack = () => {
   return (
     <Stack.Navigator
       initialRouteName='pokedex'
@@ -29,11 +29,20 @@ const PokeStack = () => {
     </Stack.Navigator>
   )
 }
+const FavoritesStack = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName='favoritesList'
+    >
+      <Stack.Screen name='favoritesList' component={FavoritesScreen} options={{headerShown: false}} />
+      <Stack.Screen name='pokedetail' component={DetailScreen} />
+    </Stack.Navigator>
+  )
+}
 
 const PokeNavigation = () => {
   
   const {isLoading} = useSelector(state => state.pokemon)
-
 
   return (
     <NavigationContainer>
@@ -54,11 +63,11 @@ const PokeNavigation = () => {
           tabBarLabel: 'Rechercher',
           tabBarIcon: ({focused, color}) => <Icon name='search' color={color} size={focused ? 40 : 30} />
         }}/>
-        <Tab.Screen name='home'  component={(isLoading) ? LoadingView : PokeStack } options={{
+        <Tab.Screen name='home'  component={(isLoading) ? LoadingView : PokedexStack } options={{
           tabBarLabel: 'Pokedex',
           tabBarIcon: ({focused, color}) => <Icon name='catching-pokemon' color={color} size={focused ? 45 : 32} />
         }}/>
-        <Tab.Screen name='favorites' component={FavoritesScreen} options={{
+        <Tab.Screen name='favorites' component={FavoritesStack} options={{
           tabBarLabel: 'Mes Pokemons',
           tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />,
           headerShown: true,

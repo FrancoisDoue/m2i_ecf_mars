@@ -78,8 +78,8 @@ export const fetchPokemon = createAsyncThunk(
                 dispatch(setSelectedPokemon(datas))
                 
         //         // return datas
-        //     })
-        //     .catch( rejectWithValue )
+            })
+            .catch( rejectWithValue )
     }
 )
 export const fetchDetailledPokemonList = createAsyncThunk(

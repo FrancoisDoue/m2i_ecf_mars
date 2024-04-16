@@ -3,7 +3,7 @@ export const evolveMap = (dumbEvolveObject) => {
     const cleanAndBeautifulArray = []
     do{
         if (!!tempObj?.species) {
-            cleanAndBeautifulArray.push(tempObj.species)
+            cleanAndBeautifulArray.push(tempObj.species.name)
             tempObj = tempObj.evolves_to[0]
         } else break 
     } while ( true )

@@ -11,6 +11,7 @@ export default class Pokemon {
     imageAnimatedSmall
     imageLarge
     stats
+    evolvesUrl
 
     constructor(pokemon){
         console.log(pokemon.name, pokemon.id, pokemon.order)
@@ -24,10 +25,10 @@ export default class Pokemon {
         this.imageAnimatedSmall = pokemon.sprites.other.showdown.front_default
         this.imageLarge = pokemon.sprites.other['official-artwork'].front_default
         this.stats = pokemon.stats.map((stat) => new PokeStat(stat))
+        this.evolvesUrl = pokemon.evolution_chain.url
     }
 
     #capitalize(name) {
-        console.log(name.charAt(0).toUpperCase() + name.slice(1))
         return name.charAt(0).toUpperCase() + name.slice(1);
     }
 }

@@ -73,8 +73,8 @@ const PokeNavigation = () => {
         <Tab.Screen name='favorites' component={FavoritesStack} options={{
           tabBarLabel: 'Mes Pokemons',
           tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />,
-          headerShown: true,
-          title: 'Mes Pokemons'
+          // headerShown: false,
+          // title: 'Mes Pokemons'
         }}/>
 
       </Tab.Navigator>

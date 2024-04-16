@@ -52,9 +52,7 @@ const PokeItem = ({pokemon}) => {
     },
   });
 
-  const pokeImg = isInFavorites
-    ? pokemon.sprites?.other.showdown.front_default || pokemon.sprites.front_default
-    : pokemon.sprites.front_default;
+  const pokeImg = (isInFavorites) ? pokemon.imageAnimatedSmall : pokemon.imageSmall
 
   return (
     <Pressable
@@ -66,7 +64,7 @@ const PokeItem = ({pokemon}) => {
         resizeMode={isInFavorites ? 'contain' : 'cover'}
       />
       <View style={styles.pokeDescription}>
-        {[pokemon.name.toUpperCase(), '#' + pokemon.order].map((element, i) => (
+        {[pokemon.capitalizedName, '#' + pokemon.order].map((element, i) => (
           <Text key={i} style={styles.cardText}>
             {element}
           </Text>

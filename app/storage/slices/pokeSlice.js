@@ -9,6 +9,7 @@ const pokeSlice = createSlice({
         maxPage: 1,
         step: 20,
         selectedPokemon: null,
+        selectedEvolutions: [],
         isLoading: false,
         error: null,
     },
@@ -34,8 +35,11 @@ const pokeSlice = createSlice({
         },
         setSelectedPokemon: (state, action) => {
             state.selectedPokemon = action.payload
+        },
+        setEvolutions: (state, action) => {
+            state.selectedPokemon.evolutions = action.payload
+            state.selectedEvolutions = action.payload
         }
-
     },
     extraReducers: ({addMatcher, addCase}) => {
         addCase(fetchDetailledPokemonList.fulfilled, (state, action) => {
@@ -56,6 +60,7 @@ export const {
     setMaxPage,
     setSelectedPokemon,
     setPage,
+    setEvolutions,
 } = pokeSlice.actions
 
 export default pokeSlice.reducer

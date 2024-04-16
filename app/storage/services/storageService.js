@@ -4,7 +4,7 @@ import { pushInFavorites, removeFromFavorites, setFavorites, setNameList } from 
 import { api } from "../../utils/pokeapi.backend";
 import { axiosFetchCompletePokemon } from "./pokemonService";
 
-const USER_KEY = 'user_favorites2'
+const USER_KEY = 'pokemon_favorites'
 
 export const storeFavorites = createAsyncThunk(
     'user/storeFavorites',
@@ -48,18 +48,12 @@ export const getFavorites = createAsyncThunk(
         const {favorites} = getState().user
         AsyncStorage.getItem(USER_KEY)
         .then((result) => {
-                // console.log(favorites)
                 result = JSON.parse(result) || []
                 dispatch(setNameList(result))
-                console.log(result)
-                // result = result.filter(e => !favorites.some(({name}) => name === e))
                 api.all(
                     result.map(async (name) => {
-                        if (favorites.some((pokemon) => pokemon.name == name )){
-                            return pokemon
-                        }
+                        if (favorites.some((pokemon) => pokemon.name == name )) return pokemon
                         return axiosFetchCompletePokemon(name)
-
                     })
                 )
                 .then(result => dispatch(setFavorites(result)))

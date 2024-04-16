@@ -1,9 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { setFilterList, setNamesList, setTypesList } from "../slices/pokeFilterSlice"
 import { api, pokeSpeciesApi, pokemonApi, typesApi } from "../../utils/pokeapi.backend"
-import { setMaxPage, setSelectedPokemon } from "../slices/pokeSlice"
+import { setEvolutions, setMaxPage, setSelectedPokemon } from "../slices/pokeSlice"
 import Pokemon from "../../utils/Pokemon"
-
+import { evolveMap } from "../../utils/mappers"
+import axios from "axios"
 
 // generic callbacks for extraReducers
 export const fulfilledCb = (state, action) => {
@@ -26,8 +27,7 @@ export const axiosFetchCompletePokemon = async (name) => {
         const species = await pokeSpeciesApi.get(`/${name}`)
         const pokemon = await pokemonApi.get(`/${name}`)
         const buildedPokemon = new Pokemon({...species, ...pokemon})
-        console.log(buildedPokemon)
-        return {...species, ...pokemon}
+        return buildedPokemon
     } catch (error) {
         throw error
     }
@@ -80,7 +80,6 @@ export const fetchDetailledPokemonList = createAsyncThunk(
         if (pokeFilter.filterList.length) {
             const fromPokemon = (pokemon.page - 1) * pokemon.step
             const toPokemon = (pokemon.page * pokemon.step)
-            // console.log(fromPokemon, toPokemon)
             const list = pokeFilter.filterList.slice(fromPokemon, toPokemon)
             return api.all(
                 list.map(monster => axiosFetchCompletePokemon(monster?.pokemon?.name || monster.name))
@@ -88,5 +87,27 @@ export const fetchDetailledPokemonList = createAsyncThunk(
             .catch(rejectWithValue)
         }
         rejectWithValue()
+    }
+)
+export const fetchEvolutions = createAsyncThunk(
+    "pokemon/fetchEvolutions",
+    async (_args, {rejectWithValue, dispatch, getState}) => {
+        const {selectedPokemon, pokeList} = getState().pokemon
+        if (selectedPokemon.evolutions) return selectedPokemon.evolutions
+        return api.get(selectedPokemon.evolvesUrl)
+            .then(({chain}) => {
+                const evolveArray = evolveMap(chain)
+                api.all(evolveArray.map((name) => {
+                    if (name == selectedPokemon.name) 
+                        return selectedPokemon
+                    const findedInList = pokeList.find(p => p.name == name)
+                    if (!!findedInList) 
+                        return findedInList
+                    return axiosFetchCompletePokemon(name)
+                }))
+                    .then((evolutionList) => dispatch(setEvolutions(evolutionList)))
+                    .catch(rejectWithValue)
+            })
+            .catch(rejectWithValue)
     }
 )

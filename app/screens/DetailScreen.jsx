@@ -1,17 +1,17 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import {Image, StyleSheet, Text, View, Pressable } from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import globalStyle, {pokeColors} from '../styles/globalStyle';
 import PokeButton from '../components/shared/PokeButton';
 import { addFavorite, removeFavorite } from '../storage/services/storageService';
 import { fetchEvolutions } from '../storage/services/pokemonService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { setEvolutions } from '../storage/slices/pokeSlice';
 
 const DetailScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const {selectedPokemon, selectedEvolutions} = useSelector(state => state.pokemon);
   const {favorites} = useSelector(state => state.user);
-  // const [evolutions, setEvolutions] = useState(selectedPokemon.evolutions)
 
   const isInFavorites = favorites.some(({name}) => name === selectedPokemon.name);
 
@@ -22,11 +22,17 @@ const DetailScreen = ({navigation}) => {
 
   useLayoutEffect(() => {
     if (!selectedPokemon.evolutions) dispatch(fetchEvolutions())
-    // dispatch(fetchEvolutions())
+    else if (selectedEvolutions != selectedPokemon.evolutions) {
+      dispatch(setEvolutions(selectedPokemon.evolutions))
+    }
     navigation.setOptions({
       title: selectedPokemon.upperCaseName,
     })
-  }, [selectedPokemon.evolutions])
+  }, [selectedPokemon])
+
+  useLayoutEffect(() => {
+
+  }, [selectedPokemon])
 
   return (
     <View style={styles.main}>
@@ -47,7 +53,9 @@ const DetailScreen = ({navigation}) => {
             <Text style={styles.largeText}># {selectedPokemon.order}</Text>
           </View>
           <View style={styles.pokeRow}>
-            <Text style={styles.mediumText}>Types:</Text>
+            <Text style={styles.mediumText}>
+              Type{selectedPokemon.types.length > 1 && 's'}:
+            </Text>
             {selectedPokemon.types.map((type) => (
               <Image
                 key={type.name}
@@ -59,35 +67,39 @@ const DetailScreen = ({navigation}) => {
             ))}
           </View>
           <View style={styles.pokeMain} >
+            {(selectedEvolutions?.length > 1) &&
             <View style={styles.pokeEvolutions}>
-              {selectedEvolutions?.map(({capitalizedName, name, imageAnimatedSmall, imageSmall}, index) => (
+              { selectedEvolutions?.map((pokemon, index) => (
                 <React.Fragment key={index}>
                 {(!!index) && 
-                <View>
-                  <Icon name="keyboard-double-arrow-up" size={20} color={pokeColors.pokeBlue}/>
-                </View>}
-                <View 
-                  style={[
-                    styles.evolutionItem, 
-                    (name == selectedPokemon.name) && {
-                      borderWidth: 1.5,
-                      borderColor: pokeColors.pokeDarkRed
-                    }
-                  ]}
-                >
-                  <Image 
-                    source={{uri: (name == selectedPokemon.name) ? imageAnimatedSmall : imageSmall}}
-                    width={100}
-                    height={70}
-                    resizeMode={(name == selectedPokemon.name) ? 'contain' : 'cover'}
-                  />
-                  <Text 
-                    style={[styles.evolutionText, (name == selectedPokemon.name) && {...globalStyle.textRed}]}
-                  >{capitalizedName}</Text>
-                </View>
+                  <View>
+                    <Icon name="keyboard-double-arrow-right" size={20} color={pokeColors.pokeBlue}/>
+                  </View>
+                }
+                  <Pressable 
+                    onPress={() => console.log(pokemon.name)}
+                    style={[
+                      styles.evolutionItem, 
+                      (pokemon.name == selectedPokemon.name) && {
+                        borderWidth: 1.5,
+                        borderColor: pokeColors.pokeDarkRed
+                      }
+                    ]}
+                  >
+                    <Image 
+                      source={{uri: (pokemon.name == selectedPokemon.name) ? pokemon.imageAnimatedSmall : pokemon.imageSmall}}
+                      width={100}
+                      height={55}
+                      resizeMode={(pokemon.name == selectedPokemon.name) ? 'contain' : 'cover'}
+                    />
+                    <Text 
+                      style={[styles.evolutionText, (pokemon.name == selectedPokemon.name) && {...globalStyle.textRed}]}
+                    >{pokemon.capitalizedName}</Text>
+                  </Pressable>
                 </React.Fragment>
               ))}
             </View>
+            }
             <View style={styles.pokeStats}>
               {selectedPokemon.stats.map(stat => (
                 <View style={styles.pokeRowStat} key={stat.name}>
@@ -130,21 +142,22 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   pokeMain: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
+    width: '90%',
     justifyContent: 'center',
   },
   pokeEvolutions: {
-    width: '29%',
-    flexDirection: 'column-reverse',
+    width: '100%',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     marginVertical: 5,
-    borderRightWidth: 1,
+    borderBottomWidth: 1,
     borderColor: pokeColors.pokeRed
   },
   evolutionItem: {
-    width: '90%',
-    height: 100,
+    width: '27%',
+    height: 80,
     justifyContent: 'center',
     backgroundColor: pokeColors.pokeWhite,
     elevation: 2,
@@ -158,9 +171,6 @@ const styles = StyleSheet.create({
     ...globalStyle.textSmall,
     ...globalStyle.textBlue,
     fontWeight: '500',
-  },
-  pokeStats: {
-    width: '70%'
   },
   largeText: {
     ...globalStyle.textXLarge,
@@ -181,8 +191,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: pokeColors.pokeDarkRed,
   },
+  // pokeStats: {
+  //   width: '60%',
+  // },
   pokeRowStat: {
-    width: '90%',
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 5,

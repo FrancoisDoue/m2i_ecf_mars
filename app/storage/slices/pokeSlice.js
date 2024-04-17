@@ -39,7 +39,7 @@ const pokeSlice = createSlice({
         setEvolutions: (state, action) => {
             state.selectedPokemon.evolutions = action.payload
             state.selectedEvolutions = action.payload
-        }
+        },
     },
     extraReducers: ({addMatcher, addCase}) => {
         addCase(fetchDetailledPokemonList.fulfilled, (state, action) => {

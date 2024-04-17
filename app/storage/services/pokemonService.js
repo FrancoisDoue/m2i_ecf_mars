@@ -13,7 +13,7 @@ export const fulfilledCb = (state, action) => {
     state.error = null
 }
 export const pendingCb = (state, action) => {
-    console.log(action.type)
+    // console.log(action.type)
     state.isLoading = true
 }
 export const rejectedCb = (state, action) => {
@@ -93,7 +93,8 @@ export const fetchEvolutions = createAsyncThunk(
     "pokemon/fetchEvolutions",
     async (_args, {rejectWithValue, dispatch, getState}) => {
         const {selectedPokemon, pokeList} = getState().pokemon
-        if (selectedPokemon.evolutions) return selectedPokemon.evolutions
+        if (!!selectedPokemon.evolutions?.length)
+            return dispatch(setEvolutions(selectedPokemon.evolutions))
         return api.get(selectedPokemon.evolvesUrl)
             .then(({chain}) => {
                 const evolveArray = evolveMap(chain)

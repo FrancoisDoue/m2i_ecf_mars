@@ -4,7 +4,7 @@ import { pokeColors } from '../../styles/globalStyle'
 import logo from '../../assets/pokemonLogo.png'
 
 
-const LoadingView = ({noFading}) => {
+const LoadingView = () => {
 
   const fading = useRef(new Animated.Value(.1)).current
 
@@ -17,7 +17,6 @@ const LoadingView = ({noFading}) => {
   }, [fading])
 
   return (
-    // <Animated.View style={[{opacity: (noFading) ? 1 : fading}, styles.loadingScreen]}>
     <Animated.View style={[{opacity: fading}, styles.loadingScreen]}>
       <Image source={logo} style={styles.logo} resizeMode={"contain"} />
       <ActivityIndicator color={pokeColors.pokeWhite} size={120}/>

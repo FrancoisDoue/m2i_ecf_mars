@@ -62,6 +62,7 @@ const SearchScreen = ({navigation}) => {
     const params = (!!searchValue || !!selectedTypes.length)
       ? {searchName: searchValue, searchTypes: selectedTypes}
       : null
+    console.log(params)
     dispatch(setFilterList(currentNameFilter))
     dispatch(setPage(1))
     navigation.navigate('home', {

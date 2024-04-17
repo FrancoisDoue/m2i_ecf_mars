@@ -45,8 +45,6 @@ const FavoritesStack = () => {
 
 const PokeNavigation = () => {
   
-  const {isLoading} = useSelector(state => state.pokemon)
-
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -66,7 +64,7 @@ const PokeNavigation = () => {
           tabBarLabel: 'Rechercher',
           tabBarIcon: ({focused, color}) => <Icon name='search' color={color} size={focused ? 40 : 30} />
         }}/>
-        <Tab.Screen name='home'  component={(isLoading) ? LoadingView : PokedexStack } options={{
+        <Tab.Screen name='home'  component={ PokedexStack } options={{
           tabBarLabel: 'Pokedex',
           tabBarIcon: ({focused, color}) => <Icon name='catching-pokemon' color={color} size={focused ? 45 : 32} />
         }}/>

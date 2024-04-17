@@ -5,18 +5,19 @@ import GradientView from '../components/shared/GradientView'
 import { StyleSheet, Text, View } from 'react-native'
 import PokeType from '../components/shared/PokeType'
 import globalStyle from '../styles/globalStyle'
+import LoadingView from '../components/shared/LoadingView'
 
 const HomeScreen = ({ navigation, route }) => {
   const {searchName, searchTypes} = route.params || {}
 
-  const {pokeList} = useSelector(state => state.pokemon)
+  const {pokeList, isLoading} = useSelector(state => state.pokemon)
 
   useLayoutEffect(() => {
     // console.log(searchName, searchTypes)
     const [isName, isTypes] = [!!searchName, !!searchTypes?.length]
     if (isName || isTypes){
       navigation.setOptions({
-        headerShown: true,
+        headerShown: !isLoading,
         headerShadowVisible: false,
         title: 'Search results for:',
         headerRight: () => (
@@ -35,8 +36,13 @@ const HomeScreen = ({ navigation, route }) => {
           </View>
         )
       })
-    }
-  }, [route.params])
+    } else navigation.setOptions({ headerShown: false })
+  }, [route.params, isLoading])
+
+
+  if (isLoading) return (
+    <LoadingView />
+  )
 
   return (
     <GradientView>

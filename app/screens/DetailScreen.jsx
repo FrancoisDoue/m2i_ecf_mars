@@ -6,7 +6,7 @@ import PokeButton from '../components/shared/PokeButton';
 import { addFavorite, removeFavorite } from '../storage/services/storageService';
 import { fetchEvolutions } from '../storage/services/pokemonService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { setEvolutions } from '../storage/slices/pokeSlice';
+import { setEvolutions, setSelectedPokemon } from '../storage/slices/pokeSlice';
 
 const DetailScreen = ({navigation}) => {
   const dispatch = useDispatch();
@@ -21,18 +21,27 @@ const DetailScreen = ({navigation}) => {
   };
 
   useLayoutEffect(() => {
-    if (!selectedPokemon.evolutions) dispatch(fetchEvolutions())
-    else if (selectedEvolutions != selectedPokemon.evolutions) {
+    if (!selectedPokemon.evolutions) {
+      dispatch(fetchEvolutions())
+    } else if (selectedEvolutions != selectedPokemon.evolutions) {
       dispatch(setEvolutions(selectedPokemon.evolutions))
     }
     navigation.setOptions({
       title: selectedPokemon.upperCaseName,
     })
   }, [selectedPokemon])
-
-  useLayoutEffect(() => {
-
-  }, [selectedPokemon])
+  
+  const goToEvolution = (evolution) => {
+    if (selectedPokemon.name != evolution.name) {
+      dispatch(setSelectedPokemon(evolution))
+      if (!favorites.some(({name}) => name === evolution.name)) {
+        console.log("pokemon is not in favorites")
+        navigation.navigate('home', {
+          screen: 'pokedetail'
+        })
+      }
+    }
+  }
 
   return (
     <View style={styles.main}>
@@ -77,7 +86,7 @@ const DetailScreen = ({navigation}) => {
                   </View>
                 }
                   <Pressable 
-                    onPress={() => console.log(pokemon.name)}
+                    onPress={() => goToEvolution(pokemon)}
                     style={[
                       styles.evolutionItem, 
                       (pokemon.name == selectedPokemon.name) && {

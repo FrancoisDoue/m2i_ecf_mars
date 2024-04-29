@@ -4,7 +4,6 @@ import { api, pokeSpeciesApi, pokemonApi, typesApi } from "../../utils/pokeapi.b
 import { setEvolutions, setMaxPage, setSelectedPokemon } from "../slices/pokeSlice"
 import Pokemon from "../../utils/Pokemon"
 import { evolveMap } from "../../utils/mappers"
-import axios from "axios"
 
 // generic callbacks for extraReducers
 export const fulfilledCb = (state, action) => {

@@ -9,8 +9,6 @@ import DetailScreen from './screens/DetailScreen'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { StyleSheet } from 'react-native'
 import globalStyle, { pokeColors } from './styles/globalStyle'
-import { useSelector } from 'react-redux'
-import LoadingView from './components/shared/LoadingView'
 
 const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
@@ -29,7 +27,7 @@ const PokedexStack = () => {
     </Stack.Navigator>
   )
 }
-const FavoritesStack = () => {
+const FavoritesStack = ({navigation}) => {
   return (
     <Stack.Navigator
       initialRouteName='favoritesList'
@@ -38,7 +36,7 @@ const FavoritesStack = () => {
       }}
     >
       <Stack.Screen name='favoritesList' component={FavoritesScreen} options={{headerShown: false}} />
-      <Stack.Screen name='pokedetail' component={DetailScreen} />
+      <Stack.Screen name='pokedetail' component={DetailScreen} /*children={() => <DetailScreen isFavContext navigation={navigation}/>}*/ />
     </Stack.Navigator>
   )
 }

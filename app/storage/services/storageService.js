@@ -45,19 +45,18 @@ export const addFavorite = createAsyncThunk(
 export const getFavorites = createAsyncThunk(
     'user/getFavorites',
     async (_args, {rejectWithValue, dispatch, getState}) => {
-        const {favorites} = getState().user
+        const {favorites, nameList} = getState().user
         AsyncStorage.getItem(USER_KEY)
         .then((result) => {
                 result = JSON.parse(result) || []
-                dispatch(setNameList(result))
-                api.all(
-                    result.map(async (name) => {
-                        if (favorites.some((pokemon) => pokemon.name == name )) return pokemon
-                        return axiosFetchCompletePokemon(name)
-                    })
-                )
-                .then(result => dispatch(setFavorites(result)))
-                .catch(rejectWithValue)
+                if (result.toString() != nameList.toString()) {
+                    dispatch(setNameList(result))
+                    api.all(
+                        result.map(async (name) => axiosFetchCompletePokemon(name))
+                    )
+                    .then(result => dispatch(setFavorites(result)))
+                    .catch(rejectWithValue)
+                }
             })
             .catch(rejectWithValue)
     }

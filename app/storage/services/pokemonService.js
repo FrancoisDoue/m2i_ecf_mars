@@ -12,7 +12,6 @@ export const fulfilledCb = (state, action) => {
     state.error = null
 }
 export const pendingCb = (state, action) => {
-    // console.log(action.type)
     state.isLoading = true
 }
 export const rejectedCb = (state, action) => {
@@ -24,7 +23,7 @@ export const rejectedCb = (state, action) => {
 export const axiosFetchCompletePokemon = async (name) => {
     try {
         const species = await pokeSpeciesApi.get(`/${name}`)
-        const pokemon = await pokemonApi.get(`/${name}`)
+        const pokemon = await pokemonApi.get(`/${species.id}`)
         const buildedPokemon = new Pokemon({...species, ...pokemon})
         return buildedPokemon
     } catch (error) {
@@ -96,15 +95,15 @@ export const fetchEvolutions = createAsyncThunk(
             return dispatch(setEvolutions(selectedPokemon.evolutions))
         return api.get(selectedPokemon.evolvesUrl)
             .then(({chain}) => {
-                const evolveArray = evolveMap(chain)
-                api.all(evolveArray.map((name) => {
-                    if (name == selectedPokemon.name) 
-                        return selectedPokemon
+                const evolveArray = evolveMap(chain, selectedPokemon.name)
+                const fetchMap = (array) => array.map((name) => {
+                    if (Array.isArray(name)) return api.all(fetchMap(name))
                     const findedInList = pokeList.find(p => p.name == name)
                     if (!!findedInList) 
                         return findedInList
                     return axiosFetchCompletePokemon(name)
-                }))
+                })
+                api.all(fetchMap(evolveArray))
                     .then((evolutionList) => dispatch(setEvolutions(evolutionList)))
                     .catch(rejectWithValue)
             })

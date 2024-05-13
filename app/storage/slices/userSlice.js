@@ -13,11 +13,9 @@ const userSlice = createSlice({
     reducers: {
         setNameList: (state, action) => {
             state.nameList = action.payload
-            console.log('nameList updated')
         },
         setFavorites: (state, action) => {
             state.favorites = action.payload
-            console.log('favorites updated')
         },
         pushInFavorites: (state, action) => {
             state.favorites.push(action.payload)
@@ -27,7 +25,6 @@ const userSlice = createSlice({
         },
     },
     extraReducers: ({addMatcher}) => {
-
         addMatcher(({type}) => (type.endsWith('/fulfilled') && type.startsWith('user')), fulfilledCb)
         addMatcher(({type}) => (type.endsWith('/pending') && type.startsWith('user')), pendingCb)
         addMatcher(({type}) => (type.endsWith('/rejected') && type.startsWith('user')), rejectedCb)

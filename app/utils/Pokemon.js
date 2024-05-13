@@ -14,7 +14,6 @@ export default class Pokemon {
     evolvesUrl
 
     constructor(pokemon){
-        // console.log(pokemon.name, pokemon.id, pokemon.order)
         this.id = pokemon.id
         this.name = pokemon.name
         this.order = pokemon.order

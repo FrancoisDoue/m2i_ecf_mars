@@ -27,7 +27,7 @@ const PokedexStack = () => {
     </Stack.Navigator>
   )
 }
-const FavoritesStack = ({navigation}) => {
+const FavoritesStack = () => {
   return (
     <Stack.Navigator
       initialRouteName='favoritesList'
@@ -36,7 +36,7 @@ const FavoritesStack = ({navigation}) => {
       }}
     >
       <Stack.Screen name='favoritesList' component={FavoritesScreen} options={{headerShown: false}} />
-      <Stack.Screen name='pokedetail' component={DetailScreen} /*children={() => <DetailScreen isFavContext navigation={navigation}/>}*/ />
+      <Stack.Screen name='pokedetail' component={DetailScreen} />
     </Stack.Navigator>
   )
 }
@@ -68,9 +68,7 @@ const PokeNavigation = () => {
         }}/>
         <Tab.Screen name='favorites' component={FavoritesStack} options={{
           tabBarLabel: 'Mes Pokemons',
-          tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />,
-          // headerShown: false,
-          // title: 'Mes Pokemons'
+          tabBarIcon: ({focused, color}) => <Icon name='bookmark' color={color} size={focused ? 40 : 30} />
         }}/>
 
       </Tab.Navigator>

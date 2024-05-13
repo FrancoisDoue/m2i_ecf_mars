@@ -62,7 +62,6 @@ const SearchScreen = ({navigation}) => {
     const params = (!!searchValue || !!selectedTypes.length)
       ? {searchName: searchValue, searchTypes: selectedTypes}
       : null
-    console.log(params)
     dispatch(setFilterList(currentNameFilter))
     dispatch(setPage(1))
     navigation.navigate('home', {
@@ -84,7 +83,6 @@ const SearchScreen = ({navigation}) => {
           value={searchValue}
           onChangeText={handleInputSearch}
           placeholder="Pokemon's name"
-          // onSubmitEditing={() => console.log('test')}
           style={styles.input}
         />
       </View>

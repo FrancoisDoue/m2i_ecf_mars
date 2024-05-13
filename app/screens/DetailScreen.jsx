@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, Pressable } from 'react-native';
+import {Image, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import React, { useEffect, useLayoutEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import globalStyle, {pokeColors} from '../styles/globalStyle';
@@ -35,12 +35,72 @@ const DetailScreen = ({navigation}) => {
     if (selectedPokemon.name != evolution.name) {
       dispatch(setSelectedPokemon(evolution))
       if (!favorites.some(({name}) => name === evolution.name)) {
-        console.log("pokemon is not in favorites")
-        navigation.navigate('home', {
+        navigation.goBack()
+        navigation.jumpTo('home', {
           screen: 'pokedetail'
         })
       }
     }
+  }
+
+  const EvolutionDisplay = () => {
+
+    const PokePressable = ({pokemon}) => {
+      return (
+        <Pressable
+          onPress={() => goToEvolution(pokemon)}
+          style={[styles.evolutionItem, pokemon.name == selectedPokemon.name && { borderWidth: 1.5, borderColor: pokeColors.pokeDarkRed }]}
+        >
+          <Image
+            source={{
+              uri:
+                pokemon.name == selectedPokemon.name
+                  ? pokemon?.imageAnimatedSmall
+                  : pokemon?.imageSmall,
+            }}
+            width={100} height={55}
+            resizeMode={ pokemon.name == selectedPokemon.name ? 'contain' : 'cover' }
+          />
+          <Text style={[styles.evolutionText, pokemon.name == selectedPokemon.name && {...globalStyle.textRed}]}>
+            {pokemon.capitalizedName}
+          </Text>
+        </Pressable>
+      )
+    }
+
+    return (
+      <>
+        {selectedEvolutions?.length > 1 && (
+          <View style={styles.pokeEvolutions}>
+            {selectedEvolutions?.map((pokemon, index) => (
+              <React.Fragment key={index}>
+                {!!index && (
+                  <View>
+                    <Icon
+                      name="keyboard-double-arrow-right"
+                      size={20}
+                      color={pokeColors.pokeBlue}
+                    />
+                  </View>
+                )}
+                {(Array.isArray(pokemon)) 
+                  ? <ScrollView 
+                    style={[styles.multiEvolutionItem]} 
+                    horizontal
+                    fadingEdgeLength={10}
+                  >
+                    {pokemon.map((p, i) => (
+                      <PokePressable key={i} pokemon={p}/>
+                    ))}
+                  </ScrollView>
+                  : <PokePressable pokemon={pokemon}/>
+                }
+              </React.Fragment>
+            ))}
+          </View>
+        )}
+      </>
+    );
   }
 
   return (
@@ -76,39 +136,7 @@ const DetailScreen = ({navigation}) => {
             ))}
           </View>
           <View style={styles.pokeMain} >
-            {(selectedEvolutions?.length > 1) &&
-            <View style={styles.pokeEvolutions}>
-              { selectedEvolutions?.map((pokemon, index) => (
-                <React.Fragment key={index}>
-                {(!!index) && 
-                  <View>
-                    <Icon name="keyboard-double-arrow-right" size={20} color={pokeColors.pokeBlue}/>
-                  </View>
-                }
-                  <Pressable 
-                    onPress={() => goToEvolution(pokemon)}
-                    style={[
-                      styles.evolutionItem, 
-                      (pokemon.name == selectedPokemon.name) && {
-                        borderWidth: 1.5,
-                        borderColor: pokeColors.pokeDarkRed
-                      }
-                    ]}
-                  >
-                    <Image 
-                      source={{uri: (pokemon.name == selectedPokemon.name) ? pokemon.imageAnimatedSmall : pokemon.imageSmall}}
-                      width={100}
-                      height={55}
-                      resizeMode={(pokemon.name == selectedPokemon.name) ? 'contain' : 'cover'}
-                    />
-                    <Text 
-                      style={[styles.evolutionText, (pokemon.name == selectedPokemon.name) && {...globalStyle.textRed}]}
-                    >{pokemon.capitalizedName}</Text>
-                  </Pressable>
-                </React.Fragment>
-              ))}
-            </View>
-            }
+            <EvolutionDisplay />
             <View style={styles.pokeStats}>
               {selectedPokemon.stats.map(stat => (
                 <View style={styles.pokeRowStat} key={stat.name}>
@@ -151,7 +179,6 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   pokeMain: {
-    // flexDirection: 'row',
     width: '90%',
     justifyContent: 'center',
   },
@@ -166,6 +193,7 @@ const styles = StyleSheet.create({
   },
   evolutionItem: {
     width: '27%',
+    maxWidth: 100,
     height: 80,
     justifyContent: 'center',
     backgroundColor: pokeColors.pokeWhite,
@@ -175,6 +203,16 @@ const styles = StyleSheet.create({
     borderWidth: .5,
     borderColor: pokeColors.pokeBlue,
     borderRadius: 4,
+  },
+  multiEvolutionItem: {
+    margin: 4,
+    borderWidth: .5,
+    borderColor: pokeColors.pokeBlue,
+    backgroundColor: pokeColors.pokeWhite,
+    borderRadius: 4,
+    elevation: 2,
+    height: 90,
+    paddingVertical: 1,
   },
   evolutionText: {
     ...globalStyle.textSmall,
@@ -200,9 +238,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: pokeColors.pokeDarkRed,
   },
-  // pokeStats: {
-  //   width: '60%',
-  // },
   pokeRowStat: {
     width: '100%',
     flexDirection: 'row',

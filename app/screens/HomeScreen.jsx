@@ -43,7 +43,7 @@ const HomeScreen = ({ navigation, route }) => {
               {(isName && isTypes) && <Text style={styles.headerTextResult}> & </Text>}
               {isTypes && 
               <View style={styles.typesBearer}>
-                <Text style={styles.headerTextResult}>type{searchTypes.length > 1 ? 's' : ''} : </Text>
+                <Text style={styles.headerTextResult}>type{searchTypes.length > 1 && 's'} : </Text>
                 {searchTypes.map((e, i) => 
                   <PokeType style={styles.pokeType} key={i} type={e} width={40} height={17}/>)
                 }
@@ -101,20 +101,20 @@ const styles = StyleSheet.create({
     ...globalStyle.textWhite,
     ...globalStyle.textSmall
   },
-  clearFiltersBtn: {
+  clearText: {
+    ...globalStyle.textWhite,
+    marginHorizontal: 4,
+  },
+  clearFiltersBtn: ({pressed}) => ({
     borderWidth: .5,
-    elevation: 4,
-    backgroundColor: pokeColors.pokeDarkRed,
+    elevation: pressed ? 2 : 4,
+    backgroundColor: pressed ? pokeColors.pokeRed : pokeColors.pokeDarkRed,
     borderColor: pokeColors.pokeWhite,
     paddingHorizontal: 2,
     paddingVertical: 5,
     borderRadius: 4,
     flexDirection: 'row',
-  },
-  clearText: {
-    ...globalStyle.textWhite,
-    marginHorizontal: 4,
-  },
+  }),
 })
 
 export default HomeScreen

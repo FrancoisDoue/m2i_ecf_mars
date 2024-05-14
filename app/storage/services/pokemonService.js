@@ -5,13 +5,12 @@ import { setEvolutions, setMaxPage, setSelectedPokemon } from "../slices/pokeSli
 import Pokemon from "../../utils/Pokemon"
 import { evolveMap } from "../../utils/mappers"
 
-// generic callbacks for extraReducers
 export const fulfilledCb = (state, action) => {
     console.log(action.type)
     state.isLoading = false
     state.error = null
 }
-export const pendingCb = (state, action) => {
+export const pendingCb = (state) => {
     state.isLoading = true
 }
 export const rejectedCb = (state, action) => {
@@ -31,7 +30,6 @@ export const axiosFetchCompletePokemon = async (name) => {
     }
 }
 
-// used for pokeFilters
 export const fetchPokemonList = createAsyncThunk(
     'pokeFilter/fetchPokemonList',
     async ( _args, {rejectWithValue, dispatch}) => {

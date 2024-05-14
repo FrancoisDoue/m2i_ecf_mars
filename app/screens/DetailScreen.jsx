@@ -1,5 +1,5 @@
 import {Image, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import globalStyle, {pokeColors} from '../styles/globalStyle';
 import PokeButton from '../components/shared/PokeButton';

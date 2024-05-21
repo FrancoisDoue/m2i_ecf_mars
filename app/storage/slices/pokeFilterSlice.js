@@ -7,6 +7,8 @@ const pokeFilterSlice = createSlice({
         namesList: [],
         typesList: [],
         filterList: [],
+        // currentTypesList: [],
+        // currentSearchName: '',
         isLoading: false,
         error: null
     },
@@ -19,8 +21,13 @@ const pokeFilterSlice = createSlice({
         },
         setFilterList: (state, action) => {
             state.filterList = action.payload
-        }
+        },
+        // setCurrentTypesList : (state, action) => {
+            
+        // },
+        // setCurrentSearchName : (state, action) => {
 
+        // },
     },
     extraReducers: ({addMatcher}) => {
         addMatcher(({type}) => (type.endsWith('/fulfilled') && type.startsWith('pokeFilter')), fulfilledCb)

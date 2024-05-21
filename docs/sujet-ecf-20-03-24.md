@@ -6,22 +6,22 @@ Développer une application mobile Pokédex en utilisant React Native, qui perme
 **Fonctionnalités requises :**
  
 1. **Écran d'accueil :**
-   - Affichage d'une liste ou d'une grille de Pokémon avec leur image, nom, et numéro de Pokédex.
-   - Recherche de Pokémon par nom ou numéro de Pokédex.
-   - Options pour trier ou filtrer les Pokémon par type.
+   - ~~Affichage d'une liste ou d'une grille de Pokémon avec leur image, nom, et numéro de Pokédex.~~
+   - ~~Recherche de Pokémon par nom ou numéro de Pokédex.~~
+   - ~~Options pour trier ou filtrer les Pokémon par type.~~
  
 2. **Détails du Pokémon :**
-   - Affichage d'informations détaillées en sélectionnant un Pokémon : image agrandie, nom, numéro de Pokédex, types, description, et statistiques de base (PV, attaque, défense, etc.).
-   - Section pour les évolutions du Pokémon, si applicable.
+   - ~~Affichage d'informations détaillées en sélectionnant un Pokémon : image agrandie, nom, numéro de Pokédex, types, description, et statistiques de base (PV, attaque, défense, etc.).~~
+   - ~~Section pour les évolutions du Pokémon, si applicable.~~
  
 3. **Fonctionnalité de capture :**
-   - Intégrer une fonctionnalité permettant aux utilisateurs de "capturer" des Pokémon, les ajoutant à leur collection personnelle.
-   - Créer un écran "Ma collection" où les utilisateurs peuvent voir les Pokémon qu'ils ont capturés.
-   - Inclure un bouton de capture dans les détails du Pokémon. La capture peut être simulée ou conditionnée par un mini-jeu simple.
+   - ~~Intégrer une fonctionnalité permettant aux utilisateurs de "capturer" des Pokémon, les ajoutant à leur collection personnelle.~~
+   - ~~Créer un écran "Ma collection" où les utilisateurs peuvent voir les Pokémon qu'ils ont capturés.~~
+   - ~~Inclure un bouton de capture dans les détails du Pokémon.~~ La capture peut être simulée ou conditionnée par un mini-jeu simple.
  
 4. **Fonctionnalités supplémentaires :**
-   - Utilisation d'une API REST (comme PokeAPI) pour récupérer les données des Pokémon.
-   - Mise en cache des données pour améliorer la performance de l'application.
+   - ~~Utilisation d'une API REST (comme PokeAPI) pour récupérer les données des Pokémon.~~
+   - ~~Mise en cache des données pour améliorer la performance de l'application.~~
    - Option pour activer/désactiver un mode sombre/clair.
  
 **Ressources et contraintes :**

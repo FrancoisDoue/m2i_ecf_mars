@@ -45,11 +45,11 @@ const DetailScreen = ({navigation}) => {
 
   const EvolutionDisplay = () => {
 
-    const PokePressable = ({pokemon}) => {
+    const PokePressable = ({pokemon, style}) => {
       return (
         <Pressable
           onPress={() => goToEvolution(pokemon)}
-          style={[styles.evolutionItem, pokemon.name == selectedPokemon.name && { borderWidth: 1.5, borderColor: pokeColors.pokeDarkRed }]}
+          style={[styles.evolutionItem, style, pokemon.name == selectedPokemon.name && { borderWidth: 1.5, borderColor: pokeColors.pokeDarkRed }]}
         >
           <Image
             source={{
@@ -87,10 +87,10 @@ const DetailScreen = ({navigation}) => {
                   ? <ScrollView 
                     style={[styles.multiEvolutionItem]} 
                     horizontal
-                    fadingEdgeLength={10}
+                    fadingEdgeLength={50}
                   >
                     {pokemon.map((p, i) => (
-                      <PokePressable key={i} pokemon={p}/>
+                      <PokePressable key={i} pokemon={p} style={{marginHorizontal: 5, width: 120}} />
                     ))}
                   </ScrollView>
                   : <PokePressable pokemon={pokemon}/>
@@ -137,17 +137,25 @@ const DetailScreen = ({navigation}) => {
           </View>
           <View style={styles.pokeMain} >
             <EvolutionDisplay />
-            <View style={styles.pokeStats}>
-              {selectedPokemon.stats.map(stat => (
-                <View style={styles.pokeRowStat} key={stat.name}>
-                  <Text style={styles.mediumText}>
-                    {stat.name.toUpperCase()}
-                  </Text>
-                  <Text style={[styles.mediumText, styles.underLine]}>
-                    {stat.baseStat}
-                  </Text>
-                </View>
-              ))}
+            <View style={styles.detailContainer}>
+              <View style={styles.descriptionContainer}>
+                <Text style={[styles.titleDescription]}>Description</Text>
+                <ScrollView >
+                  <Text style={[globalStyle.textSmall, globalStyle.textBlue]}>{selectedPokemon.description}</Text>
+                </ScrollView>
+              </View>
+              <View style={styles.pokeStats}>
+                {selectedPokemon.stats.map(stat => (
+                  <View style={styles.pokeRowStat} key={stat.name}>
+                    <Text style={styles.textStat}>
+                      {stat.name.toUpperCase()}
+                    </Text>
+                    <Text style={[styles.textStat]}>
+                      {stat.baseStat}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
           <PokeButton
@@ -192,14 +200,14 @@ const styles = StyleSheet.create({
     borderColor: pokeColors.pokeRed
   },
   evolutionItem: {
-    width: '27%',
-    maxWidth: 100,
+    width: '29%',
+    maxWidth: 120,
     height: 80,
     justifyContent: 'center',
     backgroundColor: pokeColors.pokeWhite,
     elevation: 2,
     alignItems: 'center',
-    margin: 4,
+    margin: 2,
     borderWidth: .5,
     borderColor: pokeColors.pokeBlue,
     borderRadius: 4,
@@ -224,11 +232,16 @@ const styles = StyleSheet.create({
     ...globalStyle.textWhite,
   },
   mediumText: {
-    ...globalStyle.textLarge,
+    ...globalStyle.textMedium,
+    fontWeight: '500',
     ...globalStyle.textBlue,
   },
-  underLine: {
-    textDecorationLine: 'underline',
+  detailContainer: {
+    width: '100%',
+    maxHeight: 220,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
   },
   pokeRow: {
     width: '80%',
@@ -238,10 +251,37 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: pokeColors.pokeDarkRed,
   },
+  pokeStats: {
+    width: '60%',
+    borderLeftWidth: 1,
+    borderColor: pokeColors.pokeRed
+  },
   pokeRowStat: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    paddingVertical: 2,
+    margin: 2,
+    marginLeft: 15,
+    borderRadius: 4,
+    elevation: 2,
+    backgroundColor: pokeColors.pokeDarkRed
+  },
+  textStat: {
+    ...globalStyle.textMedium,
+    color: pokeColors.pokeWhite
+  },
+  descriptionContainer: {
+    width: '40%',
+    maxHeight: '100%',
     padding: 5,
+  },
+  titleDescription: {
+    ...globalStyle.textMedium, 
+    ...globalStyle.textWhite,
+    textAlign: 'center',
+    borderRadius: 4,
+    elevation: 2,
+    backgroundColor: pokeColors.pokeDarkRed
   },
 });

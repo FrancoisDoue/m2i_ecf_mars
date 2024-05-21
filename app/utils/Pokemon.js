@@ -3,6 +3,7 @@ import PokeStat from "./PokeStats"
 export default class Pokemon {
     id
     name
+    description
     order
     capitalizedName
     upperCaseName
@@ -16,6 +17,7 @@ export default class Pokemon {
     constructor(pokemon){
         this.id = pokemon.id
         this.name = pokemon.name
+        this.description = pokemon.flavor_text_entries.find(t => t.language.name == 'en').flavor_text
         this.order = pokemon.order
         this.capitalizedName = this.#capitalize(pokemon.name)
         this.upperCaseName = pokemon.name.toUpperCase()

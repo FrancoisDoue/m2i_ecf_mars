@@ -1,10 +1,10 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import globalStyle, {pokeColors} from '../styles/globalStyle';
-import {useDispatch, useSelector} from 'react-redux';
+import globalStyle, { pokeColors } from '../styles/globalStyle';
+import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {setSelectedPokemon} from '../storage/slices/pokeSlice';
-import {useNavigation} from '@react-navigation/native';
+import { setSelectedPokemon } from '../storage/slices/pokeSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const PokeItem = ({pokemon}) => {
   const navigation = useNavigation();

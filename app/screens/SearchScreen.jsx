@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setFilterList } from '../storage/slices/pokeFilterSlice'
 import { setPage } from '../storage/slices/pokeSlice'
@@ -12,7 +12,7 @@ const SearchScreen = ({navigation}) => {
 
   const dispatch  = useDispatch()
 
-const {typesList, namesList/*, currentTypesList, currentSearchName*/} = useSelector(state => state.pokeFilter)
+const {typesList, namesList} = useSelector(state => state.pokeFilter)
   const [searchValue, setSearchValue] = useState('')
   const [selectedTypes, setSelectedTypes] = useState([])
   const [currentNameFilter, setCurrentNameFilter] = useState(namesList)

@@ -2,7 +2,6 @@ import React, { useEffect, useLayoutEffect, useState } from 'react'
 import PokeNavigation from './PokeNavigation'
 import { useDispatch, useSelector } from 'react-redux'
 import LoadingView from './components/shared/LoadingView'
-import { getAllFromStorage } from './storage/slices/userSlice'
 import { fetchDetailledPokemonList, fetchPokemonList, fetchTypesList } from './storage/services/pokemonService'
 import { getFavorites } from './storage/services/storageService'
 

@@ -1,10 +1,10 @@
 import { FlatList, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
 import PokeItem from './PokeItem';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {pokeColors} from '../styles/globalStyle';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import {goToNextPage, goToPrevPage} from '../storage/slices/pokeSlice';
+import { goToNextPage, goToPrevPage } from '../storage/slices/pokeSlice';
 
 const PokeList = ({list, isFavoritesScreen}) => {
   const dispatch = useDispatch();
